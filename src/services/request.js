@@ -19,7 +19,7 @@ export default async function request (options, url) {
     const scopes = await wepy.getSetting()    
     if (!scopes.authSetting['scope.userInfo']) {
       await wepy.openSetting()  
-      await loginInterface.login()
+      // await loginInterface.login()
     }
     // return await request(options)    
   } else if (response.statusCode === 500) {

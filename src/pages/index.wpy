@@ -18,7 +18,7 @@
 <template>
   <view class="container">
     <view class="userinfo" @tap="handleViewTap">
-      <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+      <image class="userinfo-avatar" src="{{ userInfo.avatar_url }}" background-size="cover"/>
       <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
     </view>
   </view>
@@ -30,7 +30,7 @@
 
   export default class Index extends wepy.page {
     config = {
-      navigationBarTitleText: 'test'
+      navigationBarTitleText: '首页'
     }
     components = {
       
@@ -46,11 +46,11 @@
       
     }
 
-    async onLoad() {
+    onLoad() {
       let self = this
-      this.userInfo = await this.$parent.getUser()
+      this.userInfo = this.$parent.globalData.userInfo
       this.$apply()
-      // console.log('sxx', this.userInfo)
+      
       // const topics = await api.getTopics({per: 5})
       // console.log(topics)      
     }

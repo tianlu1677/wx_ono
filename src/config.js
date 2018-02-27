@@ -1,7 +1,7 @@
 // 全局的配置文件
-const env = 'development'
+// const env = 'development'
 // const env = 'test'
-// const env = 'production'
+const env = 'production'
 const version = 1.0
 
 const hosts = {

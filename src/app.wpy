@@ -17,13 +17,47 @@ import loginInterface from './services/login'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index'
+      'pages/index',
+      'pages/mine/info',
+      'pages/mine/settings',
+
     ],
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: 'WeChat',
+      navigationBarTitleText: 'Sport',
       navigationBarTextStyle: 'black'
+    },
+
+    tabBar: {
+      color: '#888',
+      selectedColor: '#89bdf7',
+      backgroundColor: '#fff',
+      borderStyle: 'white',
+      list: [{
+        pagePath: 'pages/index',
+        text: '美图',
+        iconPath: 'images/icons/homepage.png',        
+        selectedIconPath: 'images/icons/homepage.png'
+      }, {
+        pagePath: 'pages/index',
+        text: '福利',
+        iconPath: 'images/icons/video.png',
+        selectedIconPath: 'images/icons/video.png'
+      }, 
+      {
+        pagePath: 'pages/index',
+        text: '类别',
+        iconPath: 'images/icons/meinv.png',
+        selectedIconPath: 'images/icons/meinv.png'
+      },      
+      {
+        pagePath: 'pages/mine/info',
+        text: '我的',
+        iconPath: 'images/icons/mine.png',
+        selectedIconPath: 'images/icons/mine.png'
+      }
+      ]
     }
   }
 
