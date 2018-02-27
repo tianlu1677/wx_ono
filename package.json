@@ -1,7 +1,7 @@
 {
   "name": "wechat_sports",
   "version": "0.0.1",
-  "description": "A WePY project",
+  "description": "This is a wechat project",
   "main": "dist/app.js",
   "scripts": {
     "dev": "wepy build --watch",

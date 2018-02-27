@@ -12,7 +12,7 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-
+import loginInterface from './services/login'
 
 export default class extends wepy.app {
   config = {
@@ -34,10 +34,11 @@ export default class extends wepy.app {
   constructor () {
     super()
     this.use('requestfix')
+    this.use('promisify')
   }
 
-  onLaunch() {
-    this.testAsync()
+  async onLaunch() {
+    this.getUser()
   }
 
   sleep (s) {
@@ -48,22 +49,15 @@ export default class extends wepy.app {
     })
   }
 
-  async testAsync () {
-    const data = await this.sleep(3)
-    console.log(data)
-  }
-
-  getUserInfo(cb) {
-    const that = this
-    if (this.globalData.userInfo) {
+  async getUser() {
+    // const that = this
+    if(this.globalData.userInfo) {
       return this.globalData.userInfo
     }
-    wepy.getUserInfo({
-      success (res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
-      }
-    })
+
+    let userInfo = await loginInterface.login()
+    this.globalData.userInfo = userInfo
+    console.log('app userInfo', userInfo)
   }
 }
 </script>

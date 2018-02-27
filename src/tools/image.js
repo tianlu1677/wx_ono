@@ -1,0 +1,1 @@
+import wepy from 'wepy'
