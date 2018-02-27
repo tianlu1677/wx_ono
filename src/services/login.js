@@ -15,7 +15,7 @@ const loginInterface = {
 
     try {
       userinfoRaw = await loginInterface.getUserInfo()
-      console.log(userinfoRaw)
+      // console.log(userinfoRaw)
       userinfo = await wepy.request({
         url: host + '/api/pic/v1/accounts',
         method: 'POST',        

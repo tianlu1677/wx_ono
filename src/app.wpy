@@ -49,15 +49,15 @@ export default class extends wepy.app {
     })
   }
 
-  async getUser() {
-    // const that = this
+  async getUser() {    
     if(this.globalData.userInfo) {
       return this.globalData.userInfo
     }
 
     let userInfo = await loginInterface.login()
     this.globalData.userInfo = userInfo
-    console.log('app userInfo', userInfo)
+    
+    // console.log('app userInfo', this.globalData.userInfo)
   }
 }
 </script>

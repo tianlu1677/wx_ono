@@ -11,8 +11,18 @@ async function createAccount(data = {}) {
   return res.data
 }
 
+async function getTopics(data = {}) {
+  const res = await http({
+    url: host + '/api/pic/v1/topics',
+    method: 'GET',
+    data: data
+  })
+  return res.data
+}
+
 
 module.exports = {
   createAccount,
-  
+  getTopics
+
 }

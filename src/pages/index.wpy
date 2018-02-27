@@ -21,17 +21,12 @@
       <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
       <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
     </view>
-
-
-    
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  
-  // console.log('moduleA ignored: ', moduleA) // => moduleA ignored: {}
-
+  import api from '../services/api'  
 
   export default class Index extends wepy.page {
     config = {
@@ -41,24 +36,23 @@
       
     }
 
-    data = {
-      
+    data = {      
       userInfo: {
         nickname: '加载中...'
-      },
-      
+      },      
     }
 
     computed = {
-      now () {
-        return +new Date()
-      }
+      
     }
 
-    onLoad() {
+    async onLoad() {
       let self = this
-      
-      
+      this.userInfo = await this.$parent.getUser()
+      this.$apply()
+      // console.log('sxx', this.userInfo)
+      // const topics = await api.getTopics({per: 5})
+      // console.log(topics)      
     }
   }
 </script>

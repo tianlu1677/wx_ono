@@ -1,0 +1,42 @@
+<style lang="less">
+  
+</style>
+
+<template>
+ 
+</template>
+
+<script>
+  import wepy from 'wepy'
+  
+  export default class Settings extends wepy.page {
+    config = {
+        "navigationBarTitleText": "test"
+    };
+
+
+    data = {
+
+    }
+    
+    components = {
+     
+    }
+
+    computed = {
+     
+    }
+
+    methods = {
+      
+    }
+
+    events = {
+
+    }
+
+    onLoad() {
+      
+    }
+  }
+</script>

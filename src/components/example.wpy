@@ -1,0 +1,43 @@
+<style lang="less">
+ 
+</style>
+
+<template>
+
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Index extends wepy.component {
+    props = {
+      num: {
+        type: [Number, String],
+        coerce: function (v) {
+          return +v
+        },
+        default: 50
+      }
+    }
+
+    data = {
+
+    }
+    
+    events = {
+
+    }
+
+    watch = {
+      
+    }
+
+    methods = {
+      
+    }
+
+    onLoad() {
+
+    }
+  }
+</script>
