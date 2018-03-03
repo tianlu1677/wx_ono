@@ -1,0 +1,97 @@
+<style lang="less">
+  .wallet {
+    .weui-cells__title {
+      font-size: 18px;
+    }
+    .weui-btn-area {
+      width: 40%;
+      float: left;
+    }
+  }
+</style>
+
+<template>
+  <view class="container wallet">
+    <view class="page__bd">
+      <avatar :userinfo.sync="userInfo"></avatar>
+      <view style="margin-top: 20px"></view>
+      
+
+      <!-- <view class="">设置多多</view> -->
+        <form class="weui-cells weui-cells_after-title" bindsubmit="formSubmit" bindreset="formReset">
+          <view class="weui-toptips weui-toptips_warn" wx:if="{{errorInfo}}">{{errorInfo}}</view>
+
+          <view class="weui-cells__title">可提取数量 300 </view>
+
+          
+          <view class="weui-cells__title">提取数量</view>
+            <view class="weui-cells weui-cells_after-title">
+                <view class="weui-cell weui-cell_input">
+                    <view class="weui-cell__bd">
+                        <input class="weui-input" placeholder="" />
+                    </view>
+                </view>
+            </view>
+          </view>     
+
+
+          <view class="weui-cells__tips">提交后不可更改，请仔细检查</view>  
+
+          <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" formType="submit" @tap="checkForm">
+              确定
+            </button>            
+          </view>
+          <view class="weui-btn-area">            
+            <button class="weui-btn" type="default" formType="reset">
+              重置
+            </button>
+          </view>
+        </form>
+    
+    </view>      
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'  
+  import Avatar from '../../components/avatar'
+  import api from '../../services/api'
+
+  export default class DrawMoney extends wepy.page {
+    config = {
+      navigationBarTitleText: '提取多多'
+    }
+
+    components = {
+      avatar: Avatar,
+    }
+    
+    data = {
+      userInfo: {},
+      errorInfo: null
+    }
+
+    computed = {
+       
+    }
+
+    methods = {
+      formSubmit () {
+        console.log('submit')
+      },
+      formReset () {
+        console.log('form reset')
+      }, 
+      checkForm () {
+        console.log('check')
+      }
+    }
+
+    async onLoad() {
+      this.userInfo = await api.getUserInfo()
+      this.$apply()
+   
+    }
+  }
+</script>

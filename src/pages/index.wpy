@@ -1,58 +1,81 @@
 <style lang="less">
-  .userinfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .userinfo-avatar {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 50%;
-  }
-
-  .userinfo-nickname {
-    color: #aaa;
+  .home {
+    .content {
+      height: 100px;
+      min-height: 100px;
+      background-color: #d4edda;
+      font-size: 16px;
+      padding: 15px;
+      
+    }
   }
 </style>
+
 <template>
-  <view class="container">
-    <view class="userinfo" @tap="handleViewTap">
-      <image class="userinfo-avatar" src="{{ userInfo.avatar_url }}" background-size="cover"/>
-      <view class="userinfo-nickname">{{ userInfo.nickname }}</view>
-    </view>
+  <view class="container home">
+    <view class="page__bd">
+      <avatar :userinfo.sync="userInfo"></avatar>
+      <view style="margin-top: 20px"></view>
+      <view class="content">
+        500 NKC 可提取
+        发 1 人得 5 NKC
+      </view>
+      <view style="margin-top: 20px"></view>
+      <button class="weui-button" type="primary" open-type="share">我要发多多</button>
+    </view>          
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
-  import api from '../services/api'  
+  import wepy from 'wepy'  
+  import Avatar from '../components/avatar'
 
   export default class Index extends wepy.page {
     config = {
-      navigationBarTitleText: '首页'
+      navigationBarTitleText: '糖果多多'
     }
 
     components = {
-      
+      avatar: Avatar,
     }
-
-    data = {      
-      userInfo: {
-        nickname: '加载中...'
-      },      
+    
+    data = {
+      userInfo: {}      
     }
 
     computed = {
       
     }
 
-    onLoad() {      
+    methods = {
+      onShareAppMessage (res) {
+        if (res.from === 'button') {
+          // 来自页面内转发按钮
+          console.log(res.target)
+        }
+        return {
+          title: '多多多',
+          path: '/pages/index?parent_id=1',
+          imageUrl: '',
+          success: function(res) {
+            // 转发成功
+            console.log('res', res)
+          },
+          fail: function(res) {
+            // 转发失败
+          }
+        }
+      }
+    }
+
+    onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
       this.$apply()
+      console.log('index userinfo', this.$parent._default)
       
-      // const topics = await api.getTopics({per: 5})
-      // console.log(topics)      
+      wepy.showShareMenu({
+        withShareTicket: true
+      })     
     }
   }
 </script>

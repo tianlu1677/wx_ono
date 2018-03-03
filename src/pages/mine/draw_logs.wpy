@@ -1,0 +1,76 @@
+<style lang="less">
+  .invite_log {
+    .count {
+      text-align: right;
+    }
+  }
+</style>
+
+<template>
+  <view class="container invite_log">
+    <view class="weui-panel weui-panel_access">
+      <!-- <view class="weui-panel__hd">文字组合列表</view> -->
+        <view class="weui-panel__bd">
+            <view class="weui-media-box weui-media-box_text">
+                <view class="weui-media-box__title weui-media-box__title_in-text">
+                  新多多  <text class="count">+5</text>
+                </view>
+                <view class="weui-media-box__desc">
+                  2018-02-28 14:04:34
+                </view>
+            </view>  
+            <view class="weui-media-box weui-media-box_text">
+                <view class="weui-media-box__title weui-media-box__title_in-text">
+                  新多多  <text class="count">+5</text>                                   
+                </view>
+
+                <view class="weui-media-box__desc">
+                  2018-02-28 14:04:34
+                </view>
+            </view>            
+        </view>
+        <view class="weui-panel__ft">
+            <view class="weui-cell weui-cell_access weui-cell_link" style="text-align: center">
+                <view class="weui-cell__bd">查看更多</view>
+                <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+            </view>
+        </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  
+  export default class DrawLogs extends wepy.page {
+    config = {
+        "navigationBarTitleText": "提取记录"
+    };
+
+
+    data = {
+      userInfo: {}
+    }
+    
+    components = {
+     
+    }
+
+    computed = {
+     
+    }
+
+    methods = {
+      
+    }
+
+    events = {
+
+    }
+
+    onLoad() {
+      this.userInfo = this.$parent.globalData.userInfo
+      this.$apply()
+    }
+  }
+</script>

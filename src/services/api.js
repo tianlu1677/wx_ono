@@ -4,18 +4,17 @@ import { env, host } from '../config'
 
 async function createAccount(data = {}) {
   const res = await http({
-    url: host + '/api/pic/v1/accounts',
+    url: host + '/api/coin/v1/accounts',
     method: 'POST',
     data: data
   })
   return res.data
 }
 
-async function getTopics(data = {}) {
+async function getUserInfo() {
   const res = await http({
-    url: host + '/api/pic/v1/topics',
-    method: 'GET',
-    data: data
+    url: host + '/api/coin/v1/accounts/info',
+    method: 'GET'
   })
   return res.data
 }
@@ -23,6 +22,6 @@ async function getTopics(data = {}) {
 
 module.exports = {
   createAccount,
-  getTopics
+  getUserInfo
 
 }

@@ -1,0 +1,28 @@
+<style lang="less">
+ 
+</style>
+
+<template>  
+  <view class="weui-cell__hd">
+    <image src="{{cell.icon}}" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;" />      
+  </view>
+  <view class="weui-cell__bd">{{cell.title}}</view>
+  <view class="weui-cell__ft weui-cell__ft_in-access" wx:if="{{cell.link}}">{{cell.desc}}</view>
+  <view class="weui-cell__ft" wx:if="{{!cell.link}}">{{cell.desc}}</view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Cell extends wepy.component {        
+    props = {
+      cell: {
+        url: '#',
+        link: false,
+        icon: '',
+        title: '标题1',
+        desc: '内容'  
+      }       
+    }
+  }
+</script>

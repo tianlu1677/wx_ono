@@ -1,0 +1,50 @@
+<style lang="less">
+  .userinfo {
+    padding-left: 40px;
+    image {
+      width: 100rpx;
+      height: 100rpx;
+      border-radius: 50%;
+    }
+  }
+  .userinfo-nickname {
+    text-align: center;
+    margin-left: 50px;
+    color: #aaa;
+  }
+</style>
+
+<template>      
+  <view class="weui-panel userinfo">
+    <view class="weui-panel__bd">
+       <view class="weui-panel weui-panel_access">
+          <view class="weui-media-box weui-media-box_appmsg">
+            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <image class="weui-media-box__thumb" src="{{userinfo.avatar_url}}" />
+            </view>
+            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__title">
+                {{userinfo.nickname}}
+              </view>
+             <!--  <view class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</view> -->
+             </view>
+        </view>
+       </view>
+    </view>
+  </view>
+
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Avatar extends wepy.component {        
+    props = {
+      userinfo: {
+        id: String,
+        nickname: String,
+        avatar_url: String
+      }
+    }
+  }
+</script>

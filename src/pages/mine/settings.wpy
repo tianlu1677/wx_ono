@@ -1,42 +1,92 @@
 <style lang="less">
-  
+
 </style>
 
 <template>
- 
+  <view class="container">
+    <view class="page__bd">
+      <avatar :userinfo.sync="userInfo"></avatar>
+      <view style="margin-top: 20px"></view>
+      
+      <view class="weui-cells weui-cells_after-title">
+        <repeat for="{{cells}}" key="index" item="cell">
+          <block wx:if="{{cell.link}}">
+            <navigator url="{{cell.url}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+              <cell :cell="cell"></cell>            
+            </navigator> 
+          </block>
+            
+          <block wx:if="{{!cell.link}}">
+            <view class="weui-cell">
+              <cell :cell="cell"></cell>
+            </view>            
+          </block>                    
+        </repeat>
+        <!-- 举报 -->
+        
+      </view> 
+
+      <view class="weui-cells weui-cells_after-title">
+        <repeat for="{{cells_buttom}}" key="index" item="cell">
+            <navigator url="{{cell.url}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+              <cell :cell="cell"></cell>            
+            </navigator> 
+        </repeat>    
+      </view>
+       <view style="margin-top: 20px"></view>
+
+       <navigator url="/pages/mine/draw_money">
+        <button class="weui-btn" type="primary">申请提取多多</button>
+       </navigator>
+
+    </view>          
+  </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
-  
-  export default class Settings extends wepy.page {
+  import wepy from 'wepy'  
+  import Avatar from '../../components/avatar'
+  import Cell from '../../components/cell'
+
+  export default class Index extends wepy.page {
     config = {
-        "navigationBarTitleText": "test"
-    };
+      navigationBarTitleText: '个人中心'
+    }
 
-
-    data = {
-
+    components = {
+      avatar: Avatar,
+      cell: Cell,
     }
     
-    components = {
-     
+    data = {
+      userInfo: {}      
     }
 
     computed = {
-     
+      cells () {
+        return [
+          {url: '/pages/mine/invite_logs', icon: '../../images/icons/wallet.png', title: '累计获取', desc: '200', link: true},
+          
+          {url: '/pages/mine/draw_logs', icon: '../../images/icons/wallet.png', title: '累计提取', desc: '100', link: true},
+        ]
+      },
+      cells_buttom () {
+        return [
+          {url: '.', icon: '../../images/icons/wallet.png', title: '待激活', desc: '200', link: false},
+          
+          {url: '#', icon: '', title: '玩转多多', desc: '', link: false},
+        ]
+      }      
     }
 
     methods = {
       
     }
 
-    events = {
-
-    }
-
     onLoad() {
-      
+      this.userInfo = this.$parent.globalData.userInfo
+      this.$apply()
+         
     }
   }
 </script>
