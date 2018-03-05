@@ -28,16 +28,12 @@
   import api from '../../services/api'
   import Log from '../../components/log'
   
-  export default class DrawLogs extends wepy.page {
+  export default class InviteUnactiveLogs extends wepy.page {
     config = {
-        "navigationBarTitleText": "提取记录"
+        "navigationBarTitleText": "待激活记录"
     };
 
-    data = {      
-      // draw_logs: [],
-      // first_page: false,
-      // last_page: false,
-      // next_page: 1
+    data = {            
     }
     
     components = {
@@ -49,25 +45,9 @@
     }
 
     methods = {
-      async loadMore() {
-        await this.getDrawLogs()
-      }
     }
 
-    async getDrawLogs () {
-      if (this.last_page || this.last_page === 0) {      
-        return
-      }
-      wepy.showLoading({title: '加载中', mask: true})      
-      const res = await api.getDrawLogs({page: this.next_page})
-      this.draw_logs = this.draw_logs.concat(res.bt_draw_logs)
-      this.first_page = res.first_page
-      this.last_page = res.last_page
-      this.next_page = res.next_page
-      wepy.stopPullDownRefresh()
-      this.$apply()     
-      wepy.hideLoading()
-    }
+    
 
     events = {
 

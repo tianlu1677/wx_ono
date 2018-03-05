@@ -1,0 +1,62 @@
+<style lang="less">
+  .invite_log {
+    
+    .weui-media-box__title_in-text {
+      .count {
+        text-align: right;
+        float: right;
+        font-weight: bold;
+        color: #d6ab12;
+        // font-size: 20px;
+      }
+    }
+    .weui-media-box {
+      padding-top: 5px;
+      padding-bottom: 2px;
+    }
+  }
+</style>
+
+<template>
+  <view class="container">
+    <log></log>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '../../services/api'
+  import Log from '../../components/log'
+  
+  export default class InviteActiveLogs extends wepy.page {
+    config = {
+        "navigationBarTitleText": "获取记录"
+    }
+
+    data = {      
+      
+    }
+    
+    components = {
+      log: Log, 
+    }
+
+    computed = {
+     
+    }
+
+    methods = {
+      
+    }
+
+    
+
+    events = {
+
+    }
+
+    async onLoad() {
+      
+    }
+  }
+</script>

@@ -68,6 +68,15 @@ async function getDrawLogs(data={}){
   return res.data 
 }
 
+async function getInviteLogs(data={}){
+  const res = await http({
+    url: host + '/api/coin/v1/bt_invite_logs',
+    method: 'GET',
+    data: data
+  })
+  return res.data 
+}
+
 function getVerifyImg() {  
   return host + '/rucaptcha' 
 }
@@ -79,6 +88,7 @@ module.exports = {
   setWallet,
   setDrawLog,
   getDrawLogs,
+  getInviteLogs,
   isLogin,
   setInvite,
   getVerifyImg,

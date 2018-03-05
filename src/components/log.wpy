@@ -51,7 +51,7 @@
 
 <script>
   import wepy from 'wepy'
-
+  import api from '../services/api'
   export default class Index extends wepy.component {
     props = {
       
@@ -61,7 +61,8 @@
       draw_logs: [],
       first_page: false,
       last_page: false,
-      next_page: 1
+      next_page: 1,
+      parent_name: ''
     }
     
     events = {
@@ -83,8 +84,18 @@
         return
       }
       wepy.showLoading({title: '加载中', mask: true})      
-      const res = await api.getDrawLogs({page: this.next_page})
-      this.draw_logs = this.draw_logs.concat(res.bt_draw_logs)
+      let res = {}
+      if(this.parent_name == 'DrawLogs'){
+        res = await api.getDrawLogs({page: this.next_page})        
+        this.draw_logs = this.draw_logs.concat(res.bt_draw_logs)
+      } else if(this.parent_name == 'InviteActiveLogs') {
+        res = await api.getInviteLogs({page: this.next_page, status: 'active'})
+        this.draw_logs = this.draw_logs.concat(res.bt_invite_logs)
+      } else {
+        res = await api.getInviteLogs({page: this.next_page, status: 'unactive'})
+        this.draw_logs = this.draw_logs.concat(res.bt_invite_logs)
+      }     
+      
       this.first_page = res.first_page
       this.last_page = res.last_page
       this.next_page = res.next_page
@@ -93,8 +104,10 @@
       wepy.hideLoading()
     }
 
-    onLoad() {
-
+    async onLoad() {
+      // console.log('this.$parent', this.$parent.$name)
+      this.parent_name = this.$parent.$name      
+      await this.getDrawLogs()        
     }
   }
 </script>
