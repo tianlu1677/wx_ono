@@ -1,4 +1,12 @@
 <style lang="less">
+  .verify_code {
+    
+    width: 80%;
+    font-size: 14px; 
+    text {
+      color: #bdc7cc;
+    }
+  }
 
 </style>
 
@@ -12,13 +20,13 @@
         <repeat for="{{cells}}" key="index" item="cell">
           <block wx:if="{{cell.link}}">
             <navigator url="{{cell.url}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-              <cell :cell="cell"></cell>            
+              <cell :cell.sync="cell"></cell>            
             </navigator> 
           </block>
             
           <block wx:if="{{!cell.link}}">
             <view class="weui-cell">
-              <cell :cell="cell"></cell>
+              <cell :cell.sync="cell"></cell>
             </view>            
           </block>                    
         </repeat>
@@ -26,18 +34,22 @@
         
       </view> 
 
-      <view class="weui-cells weui-cells_after-title">
-        <repeat for="{{cells_buttom}}" key="index" item="cell">
-            <navigator url="{{cell.url}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-              <cell :cell="cell"></cell>            
-            </navigator> 
-        </repeat>    
-      </view>
+      
        <view style="margin-top: 20px"></view>
 
-       <navigator url="/pages/mine/draw_money">
-        <button class="weui-btn" type="primary">申请提取多多</button>
-       </navigator>
+      <button class="weui-btn" type="primary" style="width: 80%" @tap="checkWallet">   申请提取
+      </button>
+      
+      <view style="margin-top: 40px"></view>
+
+      <view>
+        <button class="weui-btn verify_code" type="default" @tap="copyCode">
+          <text style="display: block">点击复制我的激活码</text>
+
+          <text>{{userInfo.verify_code}}</text>
+        </button>
+        
+      </view>      
 
     </view>          
   </view>
@@ -47,46 +59,69 @@
   import wepy from 'wepy'  
   import Avatar from '../../components/avatar'
   import Cell from '../../components/cell'
+  import api from '../../services/api'
+  import UserInfoMixin from '../../mixins/userinfo_mixin'
 
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: '个人中心'
     }
 
+    mixins = [UserInfoMixin]
+
     components = {
       avatar: Avatar,
       cell: Cell,
     }
     
-    data = {
-      userInfo: {}      
+    data = {            
+      cells: null     
+    }
+
+    setCells () {
+      return [
+          {url: '/pages/mine/invite_logs', icon: '../../images/icons/wallet.png', title: '累计获取', desc: `${this.userInfo.all_amount} NKC`, link: true},
+          
+          {url: '/pages/mine/draw_logs', icon: '../../images/icons/wallet.png', title: '累计提取', desc: `${this.userInfo.draw_amount} NKC`, link: true},
+          {url: '/pages/mine/invite_logs', icon: '../../images/icons/wallet.png', title: '待激活', desc: `${this.userInfo.unactive_amount} NKC`, link: true},
+          
+          {url: '/pages/mine/how_play', icon: '', title: '玩转多多', desc: '', link: true},
+        ]
     }
 
     computed = {
-      cells () {
-        return [
-          {url: '/pages/mine/invite_logs', icon: '../../images/icons/wallet.png', title: '累计获取', desc: '200', link: true},
-          
-          {url: '/pages/mine/draw_logs', icon: '../../images/icons/wallet.png', title: '累计提取', desc: '100', link: true},
-        ]
-      },
-      cells_buttom () {
-        return [
-          {url: '.', icon: '../../images/icons/wallet.png', title: '待激活', desc: '200', link: false},
-          
-          {url: '#', icon: '', title: '玩转多多', desc: '', link: false},
-        ]
-      }      
-    }
-
-    methods = {
       
     }
 
-    onLoad() {
-      this.userInfo = this.$parent.globalData.userInfo
+    methods = {
+      checkWallet () {
+        if(!api.isLogin()){
+          return
+        }
+        if(this.userInfo.wallet) {
+          wepy.navigateTo({url: '/pages/mine/draw_money'})
+        } else {
+          wepy.navigateTo({url: '/pages/mine/wallet'})
+        }
+      },
+      copyCode () {
+        wepy.showToast({
+          title: '复制成功',
+          icon: "none",
+          duration: 1500
+        })
+
+        wepy.setClipboardData({
+          data: `我的激活码：${this.userInfo.verify_code}`          
+        })
+      }
+    }
+
+    async onLoad() {
+      await this.loadUserInfo()      
+      this.cells = this.setCells()
       this.$apply()
-         
+      // console.log('setinguserinfo', this.userInfo)         
     }
   }
 </script>

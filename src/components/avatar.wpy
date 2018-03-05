@@ -1,6 +1,6 @@
 <style lang="less">
   .userinfo {
-    padding-left: 40px;
+    padding-left: 5px;
     image {
       width: 100rpx;
       height: 100rpx;
@@ -26,7 +26,9 @@
               <view class="weui-media-box__title">
                 {{userinfo.nickname}}
               </view>
-             <!--  <view class="weui-media-box__desc">由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。</view> -->
+              <view class="weui-media-box__desc" style="font-size: 12px" wx:if="{{userinfo.wallet}}">
+                {{userinfo.wallet}}
+              </view>
              </view>
         </view>
        </view>
@@ -43,7 +45,8 @@
       userinfo: {
         id: String,
         nickname: String,
-        avatar_url: String
+        avatar_url: String,
+        wallet: String
       }
     }
   }

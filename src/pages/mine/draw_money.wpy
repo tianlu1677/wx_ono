@@ -3,10 +3,7 @@
     .weui-cells__title {
       font-size: 18px;
     }
-    .weui-btn-area {
-      width: 40%;
-      float: left;
-    }
+    
   }
 </style>
 
@@ -20,33 +17,40 @@
       <!-- <view class="">设置多多</view> -->
         <form class="weui-cells weui-cells_after-title" bindsubmit="formSubmit" bindreset="formReset">
           <view class="weui-toptips weui-toptips_warn" wx:if="{{errorInfo}}">{{errorInfo}}</view>
-
-          <view class="weui-cells__title">可提取数量 300 </view>
-
-          
-          <view class="weui-cells__title">提取数量</view>
-            <view class="weui-cells weui-cells_after-title">
-                <view class="weui-cell weui-cell_input">
-                    <view class="weui-cell__bd">
-                        <input class="weui-input" placeholder="" />
-                    </view>
+          <view class="weui-cells__title" style="font-size: 14px;">可提取数量 {{userInfo.all_amount}} NKC, 单次最少提取 {{site_configs.coin_single_draw_amount}} NKC </view>          
+          <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">提取数量</view>
+                </view>
+                <view class="weui-cell__bd">                    
+                      <slider min="{{ site_configs.coin_single_draw_amount }}" max="{{userInfo.all_amount}}" name="draw_amount" show-value/>
+                </view>
+                <view class="weui-cell__ft">
+                    <!-- <icon type="warn" size="23" color="#E64340"></icon> -->
                 </view>
             </view>
-          </view>     
+            <view class="weui-cell weui-cell_input weui-cell_vcode">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">验证码 *</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="verify_code" placeholder="请输入验证码" />
+                </view>
+                <view class="weui-cell__ft">
+                    <image class="weui-vcode-img" src="{{verify_code_img}}"  style="width: 108px"></image>
+                </view>
+            </view>
 
-
-          <view class="weui-cells__tips">提交后不可更改，请仔细检查</view>  
-
+        </view>
+    
+          
+          <view style="margin-top: 40px"></view>
           <view class="weui-btn-area">
-            <button class="weui-btn" type="primary" formType="submit" @tap="checkForm">
+            <button class="weui-btn" type="primary" style="width: 80%" formType="submit">
               确定
             </button>            
-          </view>
-          <view class="weui-btn-area">            
-            <button class="weui-btn" type="default" formType="reset">
-              重置
-            </button>
-          </view>
+          </view>          
         </form>
     
     </view>      
@@ -57,40 +61,79 @@
   import wepy from 'wepy'  
   import Avatar from '../../components/avatar'
   import api from '../../services/api'
+  import UserInfoMixin from '../../mixins/userinfo_mixin'
 
   export default class DrawMoney extends wepy.page {
     config = {
       navigationBarTitleText: '提取多多'
     }
 
+    mixins = [UserInfoMixin]
+
     components = {
       avatar: Avatar,
     }
     
     data = {
-      userInfo: {},
-      errorInfo: null
+      // userInfo: {},
+      site_configs: {},
+      errorInfo: null,
+      verify_code_img: ''
+      
     }
 
     computed = {
-       
+
     }
+
 
     methods = {
-      formSubmit () {
-        console.log('submit')
+      async formSubmit (e) {
+        let draw_amount = e.detail.value.draw_amount || this.site_configs.coin_single_draw_amount
+        let verify_code = e.detail.value.verify_code
+
+        if(draw_amount > this.userInfo.all_amount) {
+          wepy.showToast({title: '数量不足', icon: 'none'})
+          return
+        }
+
+        if(this.userInfo.status == 'offline') {
+          wepy.showToast({title: '你的账号已被停用，不能进行此操作', icon: 'none'})
+          return
+        }
+        const res = await wepy.showModal({
+          title: "提示",
+          content: `提取的数目是 ${draw_amount} NKC`
+        })
+
+        if(res.confirm){
+          wepy.showToast({
+            title: '已提交成功',
+            icon: 'success'
+          })       
+          const res = api.setDrawLog({
+            draw_amount: draw_amount, 
+            _rucaptcha: verify_code
+          })
+          this.verify_code_img = await api.getVerifyImg()
+          this.userInfo.all_amount = this.userInfo.all_amount - draw_amount
+          this.$apply()        
+          wepy.navigateTo({url: '/pages/mine/draw_logs'})
+        } else {
+          console.log('提取失败')
+        }
+
       },
-      formReset () {
-        console.log('form reset')
-      }, 
-      checkForm () {
-        console.log('check')
-      }
     }
 
-    async onLoad() {
-      this.userInfo = await api.getUserInfo()
+    async onLoad() {      
+      await this.loadUserInfo()
+      await this.loadSiteConfigs()
+      this.verify_code_img = await api.getVerifyImg()
       this.$apply()
+      if (!this.userInfo.wallet) {
+        wepy.navigateTo({url: '/pages/mine/settings'})
+      }
    
     }
   }

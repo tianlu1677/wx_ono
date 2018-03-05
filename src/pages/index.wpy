@@ -1,11 +1,12 @@
 <style lang="less">
   .home {
     .content {
-      height: 100px;
-      min-height: 100px;
-      background-color: #d4edda;
+      // height: 100px;
+      // min-height: 100px;
+      // background-color: #d4edda;
       font-size: 16px;
-      padding: 15px;
+      padding: 10px;
+      color: #635a5a;
       
     }
   }
@@ -15,13 +16,19 @@
   <view class="container home">
     <view class="page__bd">
       <avatar :userinfo.sync="userInfo"></avatar>
-      <view style="margin-top: 20px"></view>
+      <!-- <view style="margin-top: 20px"></view> -->
+      
       <view class="content">
-        500 NKC 可提取
-        发 1 人得 5 NKC
+        {{site_configs.coin_index_text}}        
       </view>
+
+      <image
+        src="{{site_configs.coin_index_img}}"
+        style="width: 100%;"    
+        mode="widthFix"        
+        /> 
       <view style="margin-top: 20px"></view>
-      <button class="weui-button" type="primary" open-type="share">我要发多多</button>
+      <button class="weui-button" type="primary" style="width: 80%" open-type="share">我要发</button>
     </view>          
   </view>
 </template>
@@ -29,18 +36,26 @@
 <script>
   import wepy from 'wepy'  
   import Avatar from '../components/avatar'
+  import UserInfoMixin from '../mixins/userinfo_mixin'
+  import loginInterface from '../services/login'
+  import api from '../services/api'
+  import md5 from '../tools/md5'
+  import { Base64 } from 'js-base64'
 
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: '糖果多多'
     }
 
+    mixins = [UserInfoMixin]
+
     components = {
       avatar: Avatar,
     }
     
     data = {
-      userInfo: {}      
+      // userInfo: {},
+      // site_configs: {}    
     }
 
     computed = {
@@ -49,16 +64,14 @@
 
     methods = {
       onShareAppMessage (res) {
-        if (res.from === 'button') {
-          // 来自页面内转发按钮
-          console.log(res.target)
-        }
+        const shareParentId = Base64.encode('3427' + this.userInfo.id)
+        // const shareParentId = 17
+        console.log(shareParentId)
         return {
-          title: '多多多',
-          path: '/pages/index?parent_id=1',
-          imageUrl: '',
-          success: function(res) {
-            // 转发成功
+          title: '发发发',
+          path: `/pages/index?share=${shareParentId}`,
+          imageUrl: this.site_configs.coin_index_share_img,
+          success: function(res) {            
             console.log('res', res)
           },
           fail: function(res) {
@@ -68,11 +81,11 @@
       }
     }
 
-    onLoad() {
-      this.userInfo = this.$parent.globalData.userInfo
-      this.$apply()
-      console.log('index userinfo', this.$parent._default)
-      
+    async onLoad(options) {      
+      // console.log(options)
+      await this.loadUserInfo()        
+      await this.loadSiteConfigs()
+
       wepy.showShareMenu({
         withShareTicket: true
       })     

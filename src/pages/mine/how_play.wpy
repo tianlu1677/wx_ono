@@ -1,0 +1,50 @@
+<style lang="less">
+  
+</style>
+
+<template>
+  <view class="container">
+    <image
+        src="{{site_configs.coin_how_play_img}}"
+        style="width: 100%;"    
+        mode="widthFix"        
+        /> 
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import UserInfoMixin from '../../mixins/userinfo_mixin'
+
+  export default class Info extends wepy.page {
+    config = {
+        "navigationBarTitleText": "玩转多多"
+    };
+
+    mixins = [UserInfoMixin]
+    
+    data = {
+      
+    }
+    
+    components = {
+     
+    }
+
+    computed = {
+     
+    }
+
+    methods = {
+      
+    }
+
+    events = {
+
+    }
+
+    onLoad() {
+      this.loadSiteConfigs()
+    }
+  }
+</script>

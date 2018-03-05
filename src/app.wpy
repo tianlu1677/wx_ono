@@ -14,7 +14,8 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-import loginInterface from './services/login'
+import loginInterface from './services/login_request'
+import api from './services/api'
 
 export default class extends wepy.app {
   config = {
@@ -26,6 +27,7 @@ export default class extends wepy.app {
       'pages/mine/draw_logs',
       'pages/mine/draw_money',
       'pages/mine/wallet',
+      'pages/mine/how_play',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -39,36 +41,27 @@ export default class extends wepy.app {
       selectedColor: '#89bdf7',
       backgroundColor: '#fff',
       borderStyle: 'white',
+      position: 'bottom',
       list: [{
         pagePath: 'pages/index',
         text: '首页',
         iconPath: 'images/icons/homepage.png',        
         selectedIconPath: 'images/icons/homepage.png'
       }, 
-      // {
-      //   pagePath: 'pages/index',
-      //   text: '福利',
-      //   iconPath: 'images/icons/video.png',
-      //   selectedIconPath: 'images/icons/video.png'
-      // }, 
-      // {
-      //   pagePath: 'pages/index',
-      //   text: '类别',
-      //   iconPath: 'images/icons/meinv.png',
-      //   selectedIconPath: 'images/icons/meinv.png'
-      // },      
+           
       {
         pagePath: 'pages/mine/settings',
         text: '我的',
-        iconPath: 'images/icons/mine.png',
-        selectedIconPath: 'images/icons/mine.png'
+        iconPath: 'images/icons/person-gray.png',
+        selectedIconPath: 'images/icons/person-green.png'
       }
       ]
     }
   }
 
   globalData = {
-    userInfo: null
+    userInfo: {},
+    site_configs: {}
   }
 
   constructor () {
@@ -77,27 +70,29 @@ export default class extends wepy.app {
     this.use('promisify')
   }
 
-  async onLaunch() {
-    this.getUser()
+  async onLaunch(options = {}) {    
+    console.log('app options', options)
+        
+    this.globalData.site_configs = await api.getSiteConfigs()
+    wepy.setStorage({
+        key: 'site_configs',
+        data: this.globalData.site_configs
+      })
+    // console.log('globalData', this.globalData)    
+    await this.getUser(options)
   }
 
-  sleep (s) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve('promise resolved')
-      }, s * 1000)
-    })
-  }
-
-  async getUser() {    
-    if(this.globalData.userInfo) {
-      return this.globalData.userInfo
+  async getUser(options) {
+    if(this.globalData.userInfo.token){
+      return
+    }
+    const userInfo = await loginInterface.login()
+    this.globalData.userInfo = userInfo
+    if(userInfo && options && options.query) {
+      const share = options.query.share
+      api.setInvite({share: share})
     }
 
-    let userInfo = await loginInterface.login()
-    this.globalData.userInfo = userInfo
-    
-    // console.log('app userInfo', this.globalData.userInfo)
   }
 }
 </script>

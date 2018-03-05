@@ -17,6 +17,9 @@
   "author": "tianlu1677 <tianlu1677@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "buffer": "^5.1.0",
+    "js-base64": "^2.4.3",
+    "verification-code": "^1.0.0",
     "wepy": "^1.7.0",
     "wepy-async-function": "^1.4.4",
     "wepy-com-toast": "^1.0.2"

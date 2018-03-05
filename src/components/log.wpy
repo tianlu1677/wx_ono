@@ -1,5 +1,5 @@
 <style lang="less">
-  .invite_log {
+ .invite_log {
     
     .weui-media-box__title_in-text {
       .count {
@@ -18,8 +18,7 @@
 </style>
 
 <template>
-  <view class="container">
-    <view class="weui-panel weui-panel_access">
+  <view class="weui-panel weui-panel_access invite_log">
       <!-- <view class="weui-panel__hd">文字组合列表</view> -->
         <view class="weui-panel__bd">
           <repeat for="{{draw_logs}}" key="key" item="draw_log" index="index">       
@@ -48,32 +47,29 @@
 
         </view>
     </view>
-  </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import api from '../../services/api'
-  import Log from '../../components/log'
-  
-  export default class DrawLogs extends wepy.page {
-    config = {
-        "navigationBarTitleText": "提取记录"
-    };
 
-    data = {      
+  export default class Index extends wepy.component {
+    props = {
+      
+    }
+
+    data = {
       draw_logs: [],
       first_page: false,
       last_page: false,
       next_page: 1
     }
     
-    components = {
-      
+    events = {
+
     }
 
-    computed = {
-     
+    watch = {
+      
     }
 
     methods = {
@@ -97,14 +93,8 @@
       wepy.hideLoading()
     }
 
-    events = {
+    onLoad() {
 
-    }
-
-    async onLoad() {
-      // this.userInfo = this.$parent.globalData.userInfo
-      this.$apply()
-      this.getDrawLogs()
     }
   }
 </script>
