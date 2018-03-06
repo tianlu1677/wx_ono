@@ -1,14 +1,20 @@
 <style lang="less">
-  
+  .how_play {
+    padding: 15px;
+  }
 </style>
 
 <template>
-  <view class="container">
-    <image
+  <view class="container how_play">
+    <!-- <image
         src="{{site_configs.coin_how_play_img}}"
         style="width: 100%;"    
         mode="widthFix"        
-        /> 
+        /> --> 
+    <htmlParser
+          :parserName="name"
+          :parserContent.sync="content"
+      />    
     <view style="margin-top: 20px"></view>    
     <button class="weui-button" type="primary" style="width: 80%" open-type="share">分享</button>    
   </view>
@@ -18,6 +24,7 @@
   import wepy from 'wepy'
   import UserInfoMixin from '../../mixins/userinfo_mixin'
   import { Base64 } from 'js-base64'
+  import HTMLParser from '../../components/html_parser'
 
   export default class Info extends wepy.page {
     config = {
@@ -27,11 +34,12 @@
     mixins = [UserInfoMixin]
     
     data = {
-      
+      name: 'how_play',
+      content: '<p>玩转多多</p>'
     }
     
     components = {
-     
+      htmlParser: HTMLParser,
     }
 
     computed = {
@@ -64,6 +72,9 @@
 
     onLoad() {
       this.loadSiteConfigs()
+      this.content = this.site_configs.coin_how_play
+      this.$apply()
+      this.$invoke('htmlParser', 'htmlParserNotice')  
     }
   }
 </script>
