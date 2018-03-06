@@ -78,8 +78,8 @@
       // userInfo: {},
       site_configs: {},
       errorInfo: null,
-      verify_code_img: ''
-      
+      verify_code_img: '',
+      verify_code_key: 1      
     }
 
     computed = {
@@ -107,19 +107,20 @@
         })
 
         if(res.confirm){
-          wepy.showToast({
-            title: '已提交成功',
-            icon: 'success'
-          })       
+          // wepy.showToast({
+          //   title: '已提交成功',
+          //   icon: 'success'
+          // })       
           const res = await api.setDrawLog({
             draw_amount: draw_amount, 
             _rucaptcha: verify_code
           })
                     
-          // console.log(res)
+          await this.changeVerifyCodeImg()
           if(res.status != 200){
             this.userInfo.all_amount = this.userInfo.all_amount - draw_amount
-            wepy.navigateTo({url: '/pages/mine/draw_money'})
+            // await this.sleep(3)
+            // wepy.reLaunch({url: '/pages/mine/draw_money'})
             return
           } else {
             wepy.navigateTo({url: '/pages/mine/draw_logs'})  
@@ -131,17 +132,35 @@
 
       },
 
-      changeCodeImg () {        
-        wepy.reLaunch({url: '/pages/mine/draw_money'})       
-        // this.verify_code_img = await api.getVerifyImg()
-        // this.$apply()
-      },   
+      async changeCodeImg () {        
+        await this.changeVerifyCodeImg()    
+      }     
+    }
+
+     async changeVerifyCodeImg() {
+      if(this.verify_code_key == 1){
+          this.verify_code_img = await api.getVerifyImg(2)
+          this.verify_code_key = 2 
+        } else {
+          this.verify_code_img = await api.getVerifyImg(1)
+          this.verify_code_key = 1
+        }        
+      this.$apply()
+    }
+
+
+    sleep (s) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('promise resolved')
+        }, s * 1000)
+      })
     }
 
     async onLoad() {      
       await this.loadUserInfo()
       if (!this.userInfo.wallet) {
-        wepy.navigateTo({url: '/pages/mine/settings'})
+        wepy.switchTab({url: '/pages/mine/settings'})
         return
       }
 

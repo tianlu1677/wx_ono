@@ -1,6 +1,7 @@
 import wepy from 'wepy'
 import http from './request'
 import { env, host } from '../config'
+import { Base64 } from 'js-base64'
 
 function isLogin(){
   const token = wepy.getStorageSync('_token')  
@@ -77,20 +78,12 @@ async function getInviteLogs(data={}){
   return res.data 
 }
 
-function getVerifyImg() {  
-  return host + '/rucaptcha'   
-}
-
-async function getVerifyImgData() {
-  const res = await http({
-    url: host + '/rucaptcha',
-    method: 'GET',
-    header: {  
-      'content-type': 'application/octet-stream',  
-    },  
-  })
-  // return 'data:image/png;base64,' + res.data
-  return res.data
+function getVerifyImg(key = 1 ) {  
+  if(key == 1)
+    return host + '/rucaptcha'   
+  else {
+    return host + '/api/verify_code'
+  }
 }
 
 module.exports = {
@@ -104,6 +97,5 @@ module.exports = {
   isLogin,
   setInvite,
   getVerifyImg,
-  getVerifyImgData
 
 }
