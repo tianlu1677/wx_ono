@@ -1,0 +1,49 @@
+<style lang="less">
+ 
+</style>
+
+<template>  
+   
+      <view class="weui-cell__ft" @tap="changeCodeImg">
+          <image class="weui-vcode-img" src="{{verifyImg}}"  style="width: 108px"></image>
+      </view>
+  
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '../services/api'
+
+  export default class Index extends wepy.component {        
+    props = {
+      // verifyImg: '',         
+    }
+
+    data = {
+      key: 1,
+      verifyImg: null,
+    }
+
+    async changeVerifyCodeImg() {
+      if(this.key == 1){
+          this.verifyImg = await api.getVerifyImg(2)
+          this.key = 2 
+        } else {
+          this.verifyImg = await api.getVerifyImg(1)
+          this.key = 1
+        }        
+      this.$apply()
+    }
+
+    methods = {
+      async changeCodeImg () {        
+        await this.changeVerifyCodeImg()    
+      }  
+    }
+
+    async onLoad() {
+      this.verifyImg = await api.getVerifyImg()
+      this.$apply()
+    }
+  }
+</script>

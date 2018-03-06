@@ -37,9 +37,8 @@
                 <view class="weui-cell__bd">
                     <input class="weui-input" name="verify_code"  placeholder="请输入验证码" />
                 </view>
-                <view class="weui-cell__ft" @tap="changeCodeImg">
-                    <image class="weui-vcode-img" src="{{verify_code_img}}" style="width: 108px"></image>
-                </view>
+                
+                <verifyCode />
             </view>
 
         </view>
@@ -62,6 +61,7 @@
   import Avatar from '../../components/avatar'
   import api from '../../services/api'
   import UserInfoMixin from '../../mixins/userinfo_mixin'
+  import VerifyCode from '../../components/verify_code'
 
   export default class DrawMoney extends wepy.page {
     config = {
@@ -72,14 +72,13 @@
 
     components = {
       avatar: Avatar,
+      verifyCode: VerifyCode
     }
     
     data = {
       // userInfo: {},
-      site_configs: {},
-      errorInfo: null,
-      verify_code_img: '',
-      verify_code_key: 1      
+      // site_configs: {},
+      errorInfo: null,    
     }
 
     computed = {
@@ -106,48 +105,20 @@
           content: `提取的数目是 ${draw_amount} NKC，${this.userInfo.tip_draw_money}`
         })
 
-        if(res.confirm){
-          // wepy.showToast({
-          //   title: '已提交成功',
-          //   icon: 'success'
-          // })       
+        if(res.confirm){              
           const res = await api.setDrawLog({
             draw_amount: draw_amount, 
             _rucaptcha: verify_code
           })
                     
-          await this.changeVerifyCodeImg()
-          if(res.status != 200){
-            this.userInfo.all_amount = this.userInfo.all_amount - draw_amount
-            // await this.sleep(3)
-            // wepy.reLaunch({url: '/pages/mine/draw_money'})
-            return
-          } else {
-            wepy.navigateTo({url: '/pages/mine/draw_logs'})  
-          }
+          await this.$invoke('verifyCode', 'changeCodeImg')
+          if(res.status != 200){ return }                      
           
-        } else {
-          console.log('提取失败')
-        }
-
-      },
-
-      async changeCodeImg () {        
-        await this.changeVerifyCodeImg()    
-      }     
+          this.userInfo.all_amount = this.userInfo.all_amount - draw_amount
+          wepy.navigateTo({url: '/pages/mine/draw_logs'})                    
+        } 
+      },         
     }
-
-     async changeVerifyCodeImg() {
-      if(this.verify_code_key == 1){
-          this.verify_code_img = await api.getVerifyImg(2)
-          this.verify_code_key = 2 
-        } else {
-          this.verify_code_img = await api.getVerifyImg(1)
-          this.verify_code_key = 1
-        }        
-      this.$apply()
-    }
-
 
     sleep (s) {
       return new Promise((resolve, reject) => {
@@ -163,11 +134,8 @@
         wepy.switchTab({url: '/pages/mine/settings'})
         return
       }
-
-      await this.loadSiteConfigs()
-      this.verify_code_img = await api.getVerifyImg()
-      this.$apply()
-      
+      await this.loadSiteConfigs()      
+      // this.$apply()      
     }
   }
 </script>

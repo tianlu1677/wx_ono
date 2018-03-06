@@ -52,10 +52,12 @@
                 <view class="weui-cell__bd">
                     <input class="weui-input" name="verify_code" placeholder="请输入验证码" />
                 </view>                
+
                 
-                <view class="weui-cell__ft" @tap="changeCodeImg">
+                <!-- <view class="weui-cell__ft" @tap="changeCodeImg">
                     <image class="weui-vcode-img" src="{{verify_code_img}}"  style="width: 108px"></image>
-                </view>
+                </view> -->
+                <verifyCode />
             </view>
 
           <view class="weui-cells__tips">提交后不可更改，请仔细检查</view>  
@@ -76,6 +78,8 @@
   import wepy from 'wepy'  
   import Avatar from '../../components/avatar'
   import api from '../../services/api'
+  import VerifyCode from '../../components/verify_code'
+  import UserInfoMixin from '../../mixins/userinfo_mixin'
   // import verification from '../../tools/verify_code';
   
   export default class Wallet extends wepy.page {
@@ -85,17 +89,16 @@
 
     components = {
       avatar: Avatar,
+      verifyCode: VerifyCode
     }
     
-    data = {
-      userInfo: {},
+    mixins = [UserInfoMixin]
+
+    data = {      
       errorInfo: null,
       wallet: null,
       wechat: null,
-      wallet_length: 0,
-      verify_code_img: null,
       verify_code: '',
-      verify_code_key: 1,
     }
 
     computed = {
@@ -122,12 +125,9 @@
             wechat: wechat,
             _rucaptcha: verify_code
           })
-          await this.changeVerifyCodeImg()
-          if(response.status != 200 ){                        
-            return
-          } else {
-            wepy.navigateTo({url: '/pages/mine/draw_money'}) 
-        }
+          await this.$invoke('verifyCode', 'changeCodeImg')
+          if(response.status != 200 ){ return }
+          wepy.navigateTo({url: '/pages/mine/draw_money'}) 
         }                
       }, 
 
@@ -136,33 +136,16 @@
           this.errorInfo = null
         }
       },
-
-      async changeCodeImg () {        
-        await this.changeVerifyCodeImg()    
-      }      
     }
 
-    async changeVerifyCodeImg() {
-      if(this.verify_code_key == 1){
-          this.verify_code_img = await api.getVerifyImg(2)
-          this.verify_code_key = 2 
-        } else {
-          this.verify_code_img = await api.getVerifyImg(1)
-          this.verify_code_key = 1
-        }        
-      this.$apply()
-    }
-
+   
     async onLoad() {
-      this.userInfo = await api.getUserInfo()
-      console.log('this,', this)
+      await this.loadUserInfo()      
       if(this.userInfo.wallet){
         wepy.redirectTo({url: '/pages/mine/draw_money'}) 
         return
       }
-
-      this.verify_code_img = await api.getVerifyImg()      
-      this.$apply()    
+      // this.$apply()    
     }
   }
 </script>
