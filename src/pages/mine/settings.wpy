@@ -44,7 +44,7 @@
 
       <view>
         <button class="weui-btn verify_code" type="default" @tap="copyCode">
-          <text style="display: block">点击复制我的激活码</text>
+          <text style="display: block">点击复制我的编号</text>
 
           <text>{{userInfo.verify_code}}</text>
         </button>
@@ -112,7 +112,7 @@
         })
 
         wepy.setClipboardData({
-          data: `我的激活码：${this.userInfo.verify_code}`          
+          data: `${this.userInfo.verify_code}`          
         })
       }
     }

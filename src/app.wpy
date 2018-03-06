@@ -74,11 +74,11 @@ export default class extends wepy.app {
   async onLaunch(options = {}) {    
     console.log('app options', options)
         
-    this.globalData.site_configs = await api.getSiteConfigs()
-    wepy.setStorage({
-        key: 'site_configs',
-        data: this.globalData.site_configs
-      })
+    // this.globalData.site_configs = await api.getSiteConfigs()
+    // wepy.setStorage({
+    //     key: 'site_configs',
+    //     data: this.globalData.site_configs
+    //   })
     // console.log('globalData', this.globalData)    
     await this.getUser(options)
   }
@@ -89,9 +89,9 @@ export default class extends wepy.app {
     }
     const userInfo = await loginInterface.login()
     this.globalData.userInfo = userInfo
-    if(userInfo && options && options.query) {
+    if(userInfo && options.query) {      
       const share = options.query.share
-      api.setInvite({share: share})
+      await api.setInvite({share: share})
     }
 
   }

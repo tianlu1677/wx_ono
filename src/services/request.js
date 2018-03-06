@@ -25,7 +25,7 @@ export default async function request (options, url) {
   } else if (response.statusCode === 500) {
     wepy.showModal({
       title: '提示',
-      content: `服务器错误 ${response.data.msg}`
+      content: `错误提示 ${response.data.msg}`
     })
     return response
   } else {

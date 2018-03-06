@@ -26,7 +26,7 @@
               <view class="weui-media-box__title">
                 {{userinfo.nickname}}
               </view>
-              <view class="weui-media-box__desc" style="font-size: 12px" wx:if="{{userinfo.wallet}}">
+              <view class="weui-media-box__desc" @tap="copyCode" style="font-size: 10px" wx:if="{{userinfo.wallet}}">
                 {{userinfo.wallet}}
               </view>
              </view>
@@ -47,6 +47,20 @@
         nickname: String,
         avatar_url: String,
         wallet: String
+      }
+    }
+
+    methods = {
+      copyCode () {
+        wepy.showToast({
+          title: '复制成功',
+          icon: "none",
+          duration: 1500
+        })
+
+        wepy.setClipboardData({
+          data: `我的地址：${this.userinfo.wallet}`          
+        })
       }
     }
   }

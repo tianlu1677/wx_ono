@@ -2,6 +2,11 @@
   .wallet {
     .weui-cells__title {
       font-size: 18px;
+      color: black;
+    }
+    .address {
+      font-size: 12px;
+      color: #999999;
     }
     
   }
@@ -18,7 +23,8 @@
         <form class="weui-cells weui-cells_after-title" bindsubmit="formSubmit" bindreset="formReset">
           <view class="weui-toptips weui-toptips_warn" wx:if="{{errorInfo}}">{{errorInfo}}</view>
 
-          <view class="weui-cells__title">多多地址 *</view>
+          <view class="weui-cells__title">地址</view>
+            <view class="weui-cells__title address">如: 0x80ee0965E0872876DfD779F2369488AE3e370345</view>
             <view class="weui-cells weui-cells_after-title">
               <view class="weui-cell">
                   <view class="weui-cell__bd">
@@ -28,7 +34,8 @@
               </view>
           </view>
 
-          <view class="weui-cells__title">微信号 *</view>
+          <view class="weui-cells__title weui-label">微信号</view>
+          <!-- <view class="weui-label">验证码</view> -->
             <view class="weui-cells weui-cells_after-title">
                 <view class="weui-cell weui-cell_input">
                     <view class="weui-cell__bd">
@@ -40,7 +47,7 @@
 
           <view class="weui-cell weui-cell_input weui-cell_vcode">
                 <view class="weui-cell__hd">
-                    <view class="weui-label">验证码 *</view>
+                    <view class="weui-label">验证码</view>
                 </view>
                 <view class="weui-cell__bd">
                     <input class="weui-input" name="verify_code" placeholder="请输入验证码" />
@@ -72,7 +79,7 @@
   
   export default class Wallet extends wepy.page {
     config = {
-      navigationBarTitleText: '设置钱包'
+      navigationBarTitleText: '提取设置'
     }
 
     components = {
@@ -102,11 +109,11 @@
         let wechat = e.detail.value.wechat
         let verify_code = e.detail.value.verify_code
         if(wallet.length != 42 || wechat.length <= 3){
-          this.errorInfo = "请正确填写的多多地址和微信号"
+          this.errorInfo = "请正确填写的地址和微信号"
           return
         }
 
-        const res = await wepy.showModal({title: '确定提交', content: '您确定所填内容真实?'})
+        const res = await wepy.showModal({title: '确定提交', content: '提交后不可更改，是否确定提交?'})
         if(res.confirm) {
           const response = await api.setWallet({
             wallet: wallet, 
@@ -133,7 +140,9 @@
     async onLoad() {
       this.userInfo = await api.getUserInfo()
       this.verify_code_img = await api.getVerifyImg()
-      // this.verify_code = vcode
+      if(this.userInfo.wallet){
+        wepy.navigateTo({url: '/pages/mine/draw_money'}) 
+      }
       this.$apply()    
     }
   }

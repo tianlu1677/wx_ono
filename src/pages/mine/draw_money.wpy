@@ -32,7 +32,7 @@
             </view>
             <view class="weui-cell weui-cell_input weui-cell_vcode">
                 <view class="weui-cell__hd">
-                    <view class="weui-label">验证码 *</view>
+                    <view class="weui-label">验证码</view>
                 </view>
                 <view class="weui-cell__bd">
                     <input class="weui-input" name="verify_code" placeholder="请输入验证码" />
@@ -48,7 +48,7 @@
           <view style="margin-top: 40px"></view>
           <view class="weui-btn-area">
             <button class="weui-btn" type="primary" style="width: 80%" formType="submit">
-              确定
+              提取
             </button>            
           </view>          
         </form>
@@ -65,7 +65,7 @@
 
   export default class DrawMoney extends wepy.page {
     config = {
-      navigationBarTitleText: '提取多多'
+      navigationBarTitleText: '申请提取'
     }
 
     mixins = [UserInfoMixin]
@@ -103,7 +103,7 @@
         }
         const res = await wepy.showModal({
           title: "提示",
-          content: `提取的数目是 ${draw_amount} NKC`
+          content: `提取的数目是 ${draw_amount} NKC，${this.userInfo.tip_draw_money}`
         })
 
         if(res.confirm){
@@ -111,13 +111,17 @@
             title: '已提交成功',
             icon: 'success'
           })       
-          const res = api.setDrawLog({
+          const res = await api.setDrawLog({
             draw_amount: draw_amount, 
             _rucaptcha: verify_code
           })
           this.verify_code_img = await api.getVerifyImg()
-          this.userInfo.all_amount = this.userInfo.all_amount - draw_amount
-          this.$apply()        
+          this.$apply()
+          // console.log(res)
+          if(res.status != 200){
+            this.userInfo.all_amount = this.userInfo.all_amount - draw_amount
+            return
+          }
           wepy.navigateTo({url: '/pages/mine/draw_logs'})
         } else {
           console.log('提取失败')

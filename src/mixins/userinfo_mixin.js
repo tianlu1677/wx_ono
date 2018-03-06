@@ -6,8 +6,7 @@ export default class UserInfoMixin extends wepy.mixin {
     userInfo: {
       id: -1,
       nickname: '未登录',
-      avatar_url: 
-          'http://wx1.sinaimg.cn/large/0072bW0Xly1fnxlzbn5ipj30go09d0t0.jpg', 
+      avatar_url: '/images/unlogin.png', 
       all_amount: 0,
       draw_amount: 0,
       unactive_amount: 0           
