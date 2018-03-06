@@ -52,7 +52,7 @@
                 <view class="weui-cell__bd">
                     <input class="weui-input" name="verify_code" placeholder="请输入验证码" />
                 </view>
-                <view class="weui-cell__ft">
+                <view class="weui-cell__ft" @tap="changeCodeImg">
                     <image class="weui-vcode-img" src="{{verify_code_img}}"  style="width: 108px"></image>
                 </view>
             </view>
@@ -134,15 +134,21 @@
         if(!!this.errorInfo){
           this.errorInfo = null
         }
+      },
+
+      changeCodeImg (e) {
+        wepy.reLaunch({url: '/pages/mine/draw_money'})
       }      
     }
 
     async onLoad() {
       this.userInfo = await api.getUserInfo()
-      this.verify_code_img = await api.getVerifyImg()
       if(this.userInfo.wallet){
-        wepy.navigateTo({url: '/pages/mine/draw_money'}) 
+        wepy.redirectTo({url: '/pages/mine/draw_money'}) 
+        return
       }
+
+      this.verify_code_img = await api.getVerifyImg()      
       this.$apply()    
     }
   }

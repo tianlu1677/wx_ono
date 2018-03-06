@@ -35,10 +35,10 @@
                     <view class="weui-label">验证码</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <input class="weui-input" name="verify_code" placeholder="请输入验证码" />
+                    <input class="weui-input" name="verify_code"  placeholder="请输入验证码" />
                 </view>
-                <view class="weui-cell__ft">
-                    <image class="weui-vcode-img" src="{{verify_code_img}}"  style="width: 108px"></image>
+                <view class="weui-cell__ft" @tap="changeCodeImg">
+                    <image class="weui-vcode-img" src="{{verify_code_img}}" style="width: 108px"></image>
                 </view>
             </view>
 
@@ -115,30 +115,40 @@
             draw_amount: draw_amount, 
             _rucaptcha: verify_code
           })
-          this.verify_code_img = await api.getVerifyImg()
-          this.$apply()
+                    
           // console.log(res)
           if(res.status != 200){
             this.userInfo.all_amount = this.userInfo.all_amount - draw_amount
+            wepy.navigateTo({url: '/pages/mine/draw_money'})
             return
+          } else {
+            wepy.navigateTo({url: '/pages/mine/draw_logs'})  
           }
-          wepy.navigateTo({url: '/pages/mine/draw_logs'})
+          
         } else {
           console.log('提取失败')
         }
 
       },
+
+      changeCodeImg () {        
+        wepy.reLaunch({url: '/pages/mine/draw_money'})       
+        // this.verify_code_img = await api.getVerifyImg()
+        // this.$apply()
+      },   
     }
 
     async onLoad() {      
       await this.loadUserInfo()
+      if (!this.userInfo.wallet) {
+        wepy.navigateTo({url: '/pages/mine/settings'})
+        return
+      }
+
       await this.loadSiteConfigs()
       this.verify_code_img = await api.getVerifyImg()
       this.$apply()
-      if (!this.userInfo.wallet) {
-        wepy.navigateTo({url: '/pages/mine/settings'})
-      }
-   
+      
     }
   }
 </script>

@@ -78,7 +78,19 @@ async function getInviteLogs(data={}){
 }
 
 function getVerifyImg() {  
-  return host + '/rucaptcha' 
+  return host + '/rucaptcha'   
+}
+
+async function getVerifyImgData() {
+  const res = await http({
+    url: host + '/rucaptcha',
+    method: 'GET',
+    header: {  
+      'content-type': 'application/octet-stream',  
+    },  
+  })
+  // return 'data:image/png;base64,' + res.data
+  return res.data
 }
 
 module.exports = {
@@ -92,5 +104,6 @@ module.exports = {
   isLogin,
   setInvite,
   getVerifyImg,
+  getVerifyImgData
 
 }
