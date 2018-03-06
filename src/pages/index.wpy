@@ -9,6 +9,10 @@
       color: #635a5a;
       
     }
+    .notice {
+      // margin-left: 10px;
+      // margin-right: 10px;
+    }
   }
 </style>
 
@@ -19,7 +23,8 @@
       <!-- <view style="margin-top: 20px"></view> -->
       
       <view class="content">
-        {{site_configs.coin_index_text}}        
+        <image src="../images/icons/notice.png" style="width: 24px; height: 24px; float: left;" />
+        <text class="notice">{{site_configs.coin_index_text}}</text>
       </view>
 
       <image
@@ -38,8 +43,7 @@
   import Avatar from '../components/avatar'
   import UserInfoMixin from '../mixins/userinfo_mixin'
   import loginInterface from '../services/login'
-  import api from '../services/api'
-  import md5 from '../tools/md5'
+  import api from '../services/api'  
   import { Base64 } from 'js-base64'
 
   export default class Index extends wepy.page {
@@ -68,7 +72,7 @@
         // const shareParentId = 17
         console.log(shareParentId)
         return {
-          title: '发发发',
+          title: '糖果多多',
           path: `/pages/index?share=${shareParentId}`,
           imageUrl: this.site_configs.coin_index_share_img,
           success: function(res) {            
@@ -81,8 +85,7 @@
       }
     }
 
-    async onLoad(options) {      
-      // console.log(options)
+    async onLoad(options) {            
       await this.loadUserInfo()        
       await this.loadSiteConfigs()
 

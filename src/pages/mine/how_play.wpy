@@ -9,12 +9,15 @@
         style="width: 100%;"    
         mode="widthFix"        
         /> 
+    <view style="margin-top: 20px"></view>    
+    <button class="weui-button" type="primary" style="width: 80%" open-type="share">分享</button>    
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
   import UserInfoMixin from '../../mixins/userinfo_mixin'
+  import { Base64 } from 'js-base64'
 
   export default class Info extends wepy.page {
     config = {
@@ -36,6 +39,22 @@
     }
 
     methods = {
+      onShareAppMessage (res) {
+        const shareParentId = Base64.encode('3427' + this.userInfo.id)
+        // const shareParentId = 17
+        console.log(shareParentId)
+        return {
+          title: '玩转多多',
+          path: `/pages/mine/how_play?share=${shareParentId}`,
+          // imageUrl: this.site_configs.coin_index_share_img,
+          success: function(res) {            
+            console.log('res', res)
+          },
+          fail: function(res) {
+            // 转发失败
+          }
+        }
+      }
       
     }
 

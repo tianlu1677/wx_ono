@@ -79,13 +79,14 @@
     }
 
     setCells () {
+      const path = '../../images/icons'
       return [
-          {url: '/pages/mine/invite_active_logs', icon: '../../images/icons/wallet.png', title: '累计获取', desc: `${this.userInfo.all_amount} NKC`, link: true},
+          {url: '/pages/mine/invite_active_logs', icon: `${path}/wallet.png`, title: '累计获取', desc: `${this.userInfo.all_amount} NKC`, link: true},
           
-          {url: '/pages/mine/draw_logs', icon: '../../images/icons/wallet.png', title: '累计提取', desc: `${this.userInfo.draw_amount} NKC`, link: true},
-          {url: '/pages/mine/invite_unactive_logs', icon: '../../images/icons/wallet.png', title: '待激活', desc: `${this.userInfo.unactive_amount} NKC`, link: true},
+          {url: '/pages/mine/draw_logs', icon: `${path}/wallet.png`, title: '累计提取', desc: `${this.userInfo.draw_amount} NKC`, link: true},
+          {url: '/pages/mine/invite_unactive_logs', icon: `${path}/wallet.png`, title: '待激活', desc: `${this.userInfo.unactive_amount} NKC`, link: true},
           
-          {url: '/pages/mine/how_play', icon: '', title: '玩转多多', desc: '', link: true},
+          {url: '/pages/mine/how_play', icon: `${path}/shuoming.png`, title: '玩转多多', desc: '', link: true},
         ]
     }
 

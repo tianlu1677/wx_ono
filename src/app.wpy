@@ -46,8 +46,8 @@ export default class extends wepy.app {
       list: [{
         pagePath: 'pages/index',
         text: '首页',
-        iconPath: 'images/icons/homepage.png',        
-        selectedIconPath: 'images/icons/homepage.png'
+        iconPath: 'images/icons/homepage-gray.png',        
+        selectedIconPath: 'images/icons/homepage-blue.png'
       }, 
            
       {
@@ -72,13 +72,13 @@ export default class extends wepy.app {
   }
 
   async onLaunch(options = {}) {    
-    console.log('app options', options)
+    // console.log('app options', options)
         
-    // this.globalData.site_configs = await api.getSiteConfigs()
-    // wepy.setStorage({
-    //     key: 'site_configs',
-    //     data: this.globalData.site_configs
-    //   })
+    this.globalData.site_configs = await api.getSiteConfigs()
+    wepy.setStorage({
+        key: 'site_configs',
+        data: this.globalData.site_configs
+      })
     // console.log('globalData', this.globalData)    
     await this.getUser(options)
   }

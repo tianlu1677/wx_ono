@@ -31,8 +31,8 @@ export default class UserInfoMixin extends wepy.mixin {
   }
 
   async loadSiteConfigs () {
-    // this.site_configs = wepy.getStorageSync('site_configs')
-    this.site_configs = await api.getSiteConfigs()    
+    this.site_configs = wepy.getStorageSync('site_configs')
+    // this.site_configs = await api.getSiteConfigs()    
     this.$apply()
   }
 

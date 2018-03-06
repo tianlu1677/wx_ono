@@ -49,24 +49,7 @@
     }
 
     methods = {
-      async loadMore() {
-        await this.getDrawLogs()
-      }
-    }
-
-    async getDrawLogs () {
-      if (this.last_page || this.last_page === 0) {      
-        return
-      }
-      wepy.showLoading({title: '加载中', mask: true})      
-      const res = await api.getDrawLogs({page: this.next_page})
-      this.draw_logs = this.draw_logs.concat(res.bt_draw_logs)
-      this.first_page = res.first_page
-      this.last_page = res.last_page
-      this.next_page = res.next_page
-      wepy.stopPullDownRefresh()
-      this.$apply()     
-      wepy.hideLoading()
+      
     }
 
     events = {
@@ -74,9 +57,7 @@
     }
 
     async onLoad() {
-      // this.userInfo = this.$parent.globalData.userInfo
-      // this.$apply()
-      // this.getDrawLogs()
+      
     }
   }
 </script>
