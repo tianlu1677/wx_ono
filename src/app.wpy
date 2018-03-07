@@ -1,8 +1,11 @@
 <style lang="less">
   @import "./style/weui.less";
-
+  page {
+    height: 100%;
+  }
   .container {
     height: 100%; 
+    // min-height: 555px;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
@@ -93,7 +96,6 @@ export default class extends wepy.app {
       const share = options.query.share
       await api.setInvite({share: share})      
     }
-
   }
 }
 </script>

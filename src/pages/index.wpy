@@ -97,9 +97,9 @@
     }
 
     async onLoad(options) {            
-      await this.loadUserInfo()        
       await this.loadSiteConfigs()
-
+      await this.loadUserInfo()        
+      
       wepy.showShareMenu({
         withShareTicket: true
       })     
