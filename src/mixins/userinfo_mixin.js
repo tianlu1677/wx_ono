@@ -18,6 +18,14 @@ export default class UserInfoMixin extends wepy.mixin {
     
   }
 
+  sleep (s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('promise resolved')
+      }, s * 1000)
+    })
+  }
+
   onShow() {
     // this.userInfo = await wepy.$instance.globalData.userInfo //this.$parent.globalData.userInfo  
     // this.$apply()

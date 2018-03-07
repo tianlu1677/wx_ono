@@ -1,0 +1,37 @@
+<style lang="less">
+ 
+</style>
+
+<template>  
+  <view class="weui-cell__ft {{verify_code_img}}">
+      <image class="weui-vcode-img" src="{{verify_code_img}}"  style="width: 108px" bindload="">
+        <image class="weui-vcode-img" src="{{aa}}"  style="width: 108px" bindload="reload">
+        
+      </image>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import api from '../services/api'
+  export default class Index extends wepy.component {        
+    props = {
+      verify_code_img: String  
+    }
+    data = {
+      aa: ''
+    }
+
+    async reload() {
+      console.log('this reload')
+      this.aa = await api.getVerifyImg()
+      this.$apply()
+      await this.onLoad()
+    }
+
+    async onLoad(){
+      console.log(this.verify_code_img)
+      console.log('onload')
+    }
+  }
+</script>

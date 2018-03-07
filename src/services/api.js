@@ -17,6 +17,15 @@ async function createAccount(data = {}) {
   return res.data
 }
 
+async function updateAccount(data = {}) {
+  const res = await http({
+    url: host + '/api/coin/v1/accounts/update_info',
+    method: 'PUT',
+    data: data
+  })
+  return res.data 
+}
+
 async function getUserInfo() {
   const res = await http({
     url: host + '/api/coin/v1/accounts/info',
@@ -97,5 +106,6 @@ module.exports = {
   isLogin,
   setInvite,
   getVerifyImg,
+  updateAccount,
 
 }

@@ -16,7 +16,7 @@
           :parserContent.sync="content"
       />    
     <view style="margin-top: 20px"></view>    
-    <button class="weui-button" type="primary" style="width: 80%" open-type="share">分享</button>    
+    <!-- <button class="weui-button" type="primary" style="width: 80%" open-type="share">分享</button>     -->
   </view>
 </template>
 

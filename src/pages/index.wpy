@@ -85,6 +85,17 @@
       }
     }
 
+    showWelcomeInfo() {
+      if(this.userInfo.id > 0 && this.userInfo.first_login == true){
+        wepy.showModal({
+            title: '恭喜',
+            content: `你获得了 ${this.site_configs.coin_new_user_amount} NKC, 个人中心可查看 `,
+            showCancel: false
+        })
+        api.updateAccount({bt_account: {first_login: false }})
+      }     
+    }
+
     async onLoad(options) {            
       await this.loadUserInfo()        
       await this.loadSiteConfigs()
@@ -92,6 +103,8 @@
       wepy.showShareMenu({
         withShareTicket: true
       })     
+      
+      await this.showWelcomeInfo()
     }
   }
 </script>

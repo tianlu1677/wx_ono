@@ -91,7 +91,7 @@ export default class extends wepy.app {
     this.globalData.userInfo = userInfo
     if(userInfo && options.query) {      
       const share = options.query.share
-      await api.setInvite({share: share})
+      await api.setInvite({share: share})      
     }
 
   }
