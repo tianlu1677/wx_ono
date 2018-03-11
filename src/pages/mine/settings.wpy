@@ -11,7 +11,7 @@
 </style>
 
 <template>
-  <scroll-view class="container">
+  <view class="container">
     <view class="page__bd">
       <avatar :userinfo.sync="userInfo"></avatar>
       <view style="margin-top: 20px"></view>
@@ -44,18 +44,29 @@
       </button>
       
       <view style="margin-top: 40px"></view>
-<!-- 
-      <view>
-        <button class="weui-btn verify_code" type="default" @tap="copyCode">
-          <text style="display: block">点击复制我的编号</text>
-
-          <text>{{userInfo.verify_code}}</text>
-        </button>
-        
-      </view>   -->    
-
+      
+      <block wx:if="{{userInfo.role == 'admin' }}">
+        <form class="weui-cells weui-cells_after-title" bindsubmit="activeCode" bindreset="activeCodeReset">        
+          <view class="weui-cells__title">糖主管理</view>
+          <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">用户编号</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="code" placeholder="请输入编号" maxlength="20" />
+                </view>
+            </view>
+          </view>  
+          <view class="weui-btn-area">
+              <button class="weui-btn weui-btn_plain-primary" style="width: 80%" type="" formType="submit">
+                提交编号
+              </button>            
+            </view> 
+        </form>
+      </block>        
     </view>          
-  </scroll-view>
+  </view>
 </template>
 
 <script>
@@ -94,13 +105,13 @@
     setCells () {
       const path = '../../images/icons'
       return [
-          {url: '/pages/mine/invite_active_logs', icon: `${path}/wallet.png`, title: '累计获取', desc: `${this.userInfo.all_amount} NKC`, link: true},
+          {url: '/pages/mine/invite_active_logs', icon: `${path}/all-amount.png`, title: '累计获取', desc: `${this.userInfo.all_amount} NKC`, link: true},
           
-          {url: '/pages/mine/draw_logs', icon: `${path}/wallet.png`, title: '成功提取', desc: `${this.userInfo.draw_amount} NKC`, link: true},
-          {url: '/pages/mine/invite_unactive_logs', icon: `${path}/wallet.png`, title: '待激活', desc: `${this.userInfo.unactive_amount} NKC`, link: true},
+          {url: '/pages/mine/draw_logs', icon: `${path}/draw-money.png`, title: '成功提取', desc: `${this.userInfo.draw_amount} NKC`, link: true},
+          // {url: '/pages/mine/invite_unactive_logs', icon: `${path}/wallet.png`, title: '待激活', desc: `${this.userInfo.unactive_amount} NKC`, link: true},
           
-          {url: '/pages/mine/how_play', icon: `${path}/shuoming.png`, title: '吃糖攻略', desc: '', link: true},
-          {url: null, icon: `${path}/shuoming.png`, title: '我的编号', desc: '点击复制 ', link: false}
+          {url: '/pages/mine/how_play', icon: `${path}/intro.png`, title: '吃糖攻略', desc: '', link: true},
+          {url: null, icon: `${path}/my-code.png`, title: '我的编号', desc: '点击复制 ', link: false}
         ]
     }
 
@@ -129,15 +140,29 @@
         wepy.setClipboardData({
           data: `我的身份编号是: ${this.userInfo.verify_code}`          
         })
+      },
+
+      async activeCode(e){
+        const code = e.detail.value.code
+        if(code.length < 15 ) {
+          wepy.showToast({
+            title: '用户编号错误',
+            icon: "none",
+            duration: 1000
+          })
+          // this.activeCodeReset()
+          return
+        } else {
+          const res = await api.activeInviteLog({verify_code: code})
+          wepy.showModal({title: '友情提示', content: `${res.msg}`, showCancel: false})
+        }
       }
     }
-
-
 
     async onShow() {
       await this.loadUserInfo()      
       this.cells = this.setCells()
-      this.copy_cell = this.cells[4]
+      this.copy_cell = this.cells[3]
       this.$apply()
       // console.log('setinguserinfo', this.userInfo)         
     }

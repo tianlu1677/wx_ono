@@ -95,6 +95,15 @@ function getVerifyImg(key = 1 ) {
   }
 }
 
+async function activeInviteLog(data={}) {
+  const res = await http({
+    url: host + '/api/coin/v1/bt_invite_logs/active',
+    method: 'POST',
+    data: data
+  })
+  return res.data 
+}
+
 module.exports = {
   createAccount,
   getUserInfo,
@@ -107,5 +116,6 @@ module.exports = {
   setInvite,
   getVerifyImg,
   updateAccount,
+  activeInviteLog,
 
 }
