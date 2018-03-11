@@ -23,8 +23,7 @@ import api from './services/api'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index',
-      'pages/mine/info',
+      'pages/index',      
       'pages/mine/settings',
       'pages/mine/invite_active_logs',
       'pages/mine/invite_unactive_logs',

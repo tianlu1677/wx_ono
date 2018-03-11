@@ -79,7 +79,7 @@
             console.log('res', res)
           },
           fail: function(res) {
-            // 转发失败
+            console.log('转发取消')
           }
         }
       }

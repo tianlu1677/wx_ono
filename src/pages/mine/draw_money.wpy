@@ -12,12 +12,12 @@
     <view class="page__bd">
       <avatar :userinfo.sync="userInfo"></avatar>
       <view style="margin-top: 20px"></view>
-      
-
-      <!-- <view class="">设置多多</view> -->
+            
         <form class="weui-cells weui-cells_after-title" bindsubmit="formSubmit" bindreset="formReset">
           <view class="weui-toptips weui-toptips_warn" wx:if="{{errorInfo}}">{{errorInfo}}</view>
-          <view class="weui-cells__title" style="font-size: 14px;">可提取数量 {{userInfo.all_amount}} NKC, 单次最少提取 {{site_configs.coin_single_draw_amount}} NKC </view>          
+          <view class="weui-cells__title" style="font-size: 14px;">
+            可提取数量 {{userInfo.all_amount}} NKC, 单次最少提取 {{site_configs.coin_single_draw_amount}} NKC 
+          </view>          
           <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
@@ -40,7 +40,6 @@
                 
                 <verifyCode />
             </view>
-
         </view>
     
           
@@ -100,6 +99,12 @@
           wepy.showToast({title: '你的账号已被停用，不能进行此操作', icon: 'none'})
           return
         }
+
+        if(verify_code.length != 5) {
+          wepy.showToast({title: '请输入验证码', icon: 'none'})
+          return 
+        }
+
         const res = await wepy.showModal({
           title: "提示",
           content: `提取的数目是 ${draw_amount} NKC，${this.userInfo.tip_draw_money}`
