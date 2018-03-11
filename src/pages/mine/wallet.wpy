@@ -145,8 +145,11 @@
             phone: phone,
             _rucaptcha: verify_code
           })
-          await this.$invoke('verifyCode', 'changeCodeImg')
-          if(response.status != 200 ){ return }
+          
+          if(response.status && response.status != 200 ){ 
+            await this.$invoke('verifyCode', 'changeCodeImg')
+            return 
+          }
           wepy.navigateTo({url: '/pages/mine/draw_money'}) 
         }                
       }, 
@@ -158,7 +161,7 @@
       },
     }
 
-    async onLoad() {
+    async onShow() {
       await this.loadUserInfo()      
       if(this.userInfo.wallet){
         wepy.redirectTo({url: '/pages/mine/draw_money'}) 

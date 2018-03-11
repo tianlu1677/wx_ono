@@ -11,7 +11,7 @@
 </style>
 
 <template>
-  <view class="container">
+  <scroll-view class="container">
     <view class="page__bd">
       <avatar :userinfo.sync="userInfo"></avatar>
       <view style="margin-top: 20px"></view>
@@ -55,7 +55,7 @@
       </view>   -->    
 
     </view>          
-  </view>
+  </scroll-view>
 </template>
 
 <script>
@@ -80,6 +80,15 @@
     data = {            
       cells: null,
       copy_cell: null,     
+    }
+
+    async onPullDownRefresh() { 
+      wepy.showNavigationBarLoading() 
+      await this.loadUserInfo()      
+      this.cells = this.setCells()        
+      wepy.stopPullDownRefresh() 
+      wepy.hideNavigationBarLoading() 
+      this.$apply()
     }
 
     setCells () {
@@ -123,7 +132,9 @@
       }
     }
 
-    async onLoad() {
+
+
+    async onShow() {
       await this.loadUserInfo()      
       this.cells = this.setCells()
       this.copy_cell = this.cells[4]

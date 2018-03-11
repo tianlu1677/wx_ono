@@ -134,8 +134,9 @@
           })
           
           // console.log('res', res)
-          this.$invoke('verifyCode', 'changeCodeImg')
+          
           if(res.status && res.status != 200){ 
+            await this.$invoke('verifyCode', 'changeCodeImg')
             return 
           }                      
           
