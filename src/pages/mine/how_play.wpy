@@ -5,12 +5,7 @@
 </style>
 
 <template>
-  <view class="container how_play">
-    <!-- <image
-        src="{{site_configs.coin_how_play_img}}"
-        style="width: 100%;"    
-        mode="widthFix"        
-        /> --> 
+  <view class="container how_play">    
     <htmlParser
           :parserName="name"
           :parserContent.sync="content"
@@ -48,13 +43,11 @@
 
     methods = {
       onShareAppMessage (res) {
-        const shareParentId = Base64.encode('3427' + this.userInfo.id)
-        // const shareParentId = 17
+        const shareParentId = Base64.encode('3427' + this.userInfo.id)        
         console.log(shareParentId)
         return {
           title: '玩转多多',
-          path: `/pages/mine/how_play?share=${shareParentId}`,
-          // imageUrl: this.site_configs.coin_index_share_img,
+          path: `/pages/mine/how_play?share=${shareParentId}`,          
           success: function(res) {            
             console.log('res', res)
           },

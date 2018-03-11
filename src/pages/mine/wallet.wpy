@@ -16,26 +16,21 @@
   <view class="container wallet">
     <view class="page__bd">
       <avatar :userinfo.sync="userInfo"></avatar>
-      <view style="margin-top: 20px"></view>
-      
-
+      <view style="margin-top: 20px"></view>      
       
         <form class="weui-cells weui-cells_after-title" bindsubmit="formSubmit" bindreset="formReset">
           <view class="weui-toptips weui-toptips_warn" wx:if="{{errorInfo}}">{{errorInfo}}</view>
-
           <view class="weui-cells__title">地址</view>
             <view class="weui-cells__title address">如: 0x80ee0965E0872876DfD779F2369488AE3e370345</view>
             <view class="weui-cells weui-cells_after-title">
               <view class="weui-cell">
                   <view class="weui-cell__bd">
-                      <textarea class="weui-textarea" name="wallet" placeholder="" style="height: 3.3em" maxlength="42" value="{{userInfo.wallet}}" @input="checkValue" />
-                      <!-- <view class="weui-textarea-counter">{{wallet_length}}/42</view> -->
+                      <textarea class="weui-textarea" name="wallet" placeholder="" style="height: 3.3em" maxlength="42" value="{{userInfo.wallet}}" @input="checkValue" />                      
                   </view>
               </view>
           </view>
 
-          <view class="weui-cells__title weui-label">微信号</view>
-          <!-- <view class="weui-label">验证码</view> -->
+          <view class="weui-cells__title weui-label">微信号</view>          
             <view class="weui-cells weui-cells_after-title">
                 <view class="weui-cell weui-cell_input">
                     <view class="weui-cell__bd">
@@ -46,25 +41,39 @@
             </view>
           </view>
 
-          <view class="weui-cells__title weui-label">手机号</view>          
+          <!-- <view class="weui-cells__title weui-label">手机号</view>          
             <view class="weui-cells weui-cells_after-title">
-                <view class="weui-cell weui-cell_input">
-                    <view class="weui-cell__bd">
-                        <input class="weui-input" name="phone" minlength="11" maxlength="11" value="{{userInfo.phone}}" @input="checkValue" />
-                    </view> 
+              <view class="weui-cell weui-cell_input">
+                  <view class="weui-cell__bd">
+                      <input class="weui-input" name="phone" minlength="11" maxlength="11" value="{{userInfo.phone}}" @input="checkValue" />
+                  </view> 
 
-                </view>                
+              </view>                
             </view>            
-          </view>
+          </view> -->
+
+           <view class="weui-cell weui-cell_input weui-cell_vcode">
+              <view class="weui-cell__hd">
+                  <view class="weui-label">手机号</view>
+              </view>
+
+              
+              <view class="weui-cell__bd">
+                <input class="weui-input" name="phone" minlength="11" maxlength="11"
+                  placeholder="提取时需短信验证" 
+                  value="{{userInfo.phone}}" @input="checkValue">
+              </view> 
+              
+            </view>
           
           <view class="weui-cell weui-cell_input weui-cell_vcode">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">验证码</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <input class="weui-input" name="verify_code" placeholder="请输入验证码" />
-                </view>                                               
-                <verifyCode />
+              <view class="weui-cell__hd">
+                  <view class="weui-label">验证码</view>
+              </view>
+              <view class="weui-cell__bd">
+                  <input class="weui-input" name="verify_code" placeholder="请输入验证码" />
+              </view>                                               
+              <verifyCode />
             </view>
 
           <view class="weui-cells__tips">提交后不可更改，请仔细检查</view>  
@@ -73,10 +82,8 @@
             <button class="weui-btn" style="width: 80%" type="primary" formType="submit">
               确定
             </button>            
-          </view>
-          
-        </form>
-    
+          </view>          
+        </form>    
     </view>      
   </view>
 </template>
@@ -88,7 +95,6 @@
   import VerifyCode from '../../components/verify_code'
   import UserInfoMixin from '../../mixins/userinfo_mixin'
   import { isPhoneNum } from '../../tools/util'
-  // import verification from '../../tools/verify_code';
   
   export default class Wallet extends wepy.page {
     config = {
@@ -108,8 +114,7 @@
         wallet: null,
         wechat: null,
         verify_code: '',
-      }
-      
+      }      
     }
 
     computed = {
@@ -159,7 +164,6 @@
         wepy.redirectTo({url: '/pages/mine/draw_money'}) 
         return
       }
-      // this.$apply()    
     }
   }
 </script>

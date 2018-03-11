@@ -18,20 +18,23 @@
       
       <view class="weui-cells weui-cells_after-title">
         <repeat for="{{cells}}" key="index" item="cell">
-          <block wx:if="{{cell.link}}">
+          <block wx:if="{{cell.link && cell.url}}">
             <navigator url="{{cell.url}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
               <cell :cell.sync="cell"></cell>            
             </navigator> 
           </block>
-            
-          <block wx:if="{{!cell.link}}">
+          
+
+          <!-- <block wx:if="{{!cell.link}}">
             <view class="weui-cell">
               <cell :cell.sync="cell"></cell>
             </view>            
-          </block>                    
-        </repeat>
-        <!-- 举报 -->
-        
+          </block>   -->
+
+        </repeat>   
+        <view class="weui-cell" @tap="copyCode">
+          <cell :cell.sync="copy_cell"></cell>
+        </view>  
       </view> 
 
       
@@ -41,7 +44,7 @@
       </button>
       
       <view style="margin-top: 40px"></view>
-
+<!-- 
       <view>
         <button class="weui-btn verify_code" type="default" @tap="copyCode">
           <text style="display: block">点击复制我的编号</text>
@@ -49,7 +52,7 @@
           <text>{{userInfo.verify_code}}</text>
         </button>
         
-      </view>      
+      </view>   -->    
 
     </view>          
   </view>
@@ -75,7 +78,8 @@
     }
     
     data = {            
-      cells: null     
+      cells: null,
+      copy_cell: null,     
     }
 
     setCells () {
@@ -83,10 +87,11 @@
       return [
           {url: '/pages/mine/invite_active_logs', icon: `${path}/wallet.png`, title: '累计获取', desc: `${this.userInfo.all_amount} NKC`, link: true},
           
-          {url: '/pages/mine/draw_logs', icon: `${path}/wallet.png`, title: '累计提取', desc: `${this.userInfo.draw_amount} NKC`, link: true},
+          {url: '/pages/mine/draw_logs', icon: `${path}/wallet.png`, title: '成功提取', desc: `${this.userInfo.draw_amount} NKC`, link: true},
           {url: '/pages/mine/invite_unactive_logs', icon: `${path}/wallet.png`, title: '待激活', desc: `${this.userInfo.unactive_amount} NKC`, link: true},
           
-          {url: '/pages/mine/how_play', icon: `${path}/shuoming.png`, title: '玩糖攻略', desc: '', link: true},
+          {url: '/pages/mine/how_play', icon: `${path}/shuoming.png`, title: '吃糖攻略', desc: '', link: true},
+          {url: null, icon: `${path}/shuoming.png`, title: '我的编号', desc: '点击复制 ', link: false}
         ]
     }
 
@@ -109,11 +114,11 @@
         wepy.showToast({
           title: '复制成功',
           icon: "none",
-          duration: 1500
+          duration: 1000
         })
 
         wepy.setClipboardData({
-          data: `${this.userInfo.verify_code}`          
+          data: `我的身份编号是: ${this.userInfo.verify_code}`          
         })
       }
     }
@@ -121,6 +126,7 @@
     async onLoad() {
       await this.loadUserInfo()      
       this.cells = this.setCells()
+      this.copy_cell = this.cells[4]
       this.$apply()
       // console.log('setinguserinfo', this.userInfo)         
     }

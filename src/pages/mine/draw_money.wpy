@@ -3,7 +3,20 @@
     .weui-cells__title {
       font-size: 18px;
     }
-    
+    .content {
+      // height: 100px;
+      // min-height: 100px;
+      // background-color: #d4edda;
+      font-size: 16px;
+      padding: 10px;
+      color: red;
+      text-align: center;
+      
+    }
+    .notice {
+      // margin-left: 10px;
+      // margin-right: 10px;
+    }
   }
 </style>
 
@@ -16,7 +29,7 @@
         <form class="weui-cells weui-cells_after-title" bindsubmit="formSubmit" bindreset="formReset">
           <view class="weui-toptips weui-toptips_warn" wx:if="{{errorInfo}}">{{errorInfo}}</view>
           <view class="weui-cells__title" style="font-size: 14px;">
-            可提取数量 {{userInfo.all_amount}} NKC, 单次最少提取 {{site_configs.coin_single_draw_amount}} NKC 
+            可提取数量 {{userInfo.balance_amount}} NKC, 单次最少提取 {{site_configs.coin_single_draw_amount}} NKC 
           </view>          
           <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
@@ -24,12 +37,13 @@
                     <view class="weui-label">提取数量</view>
                 </view>
                 <view class="weui-cell__bd">                    
-                      <slider min="{{ site_configs.coin_single_draw_amount }}" max="{{userInfo.all_amount}}" name="draw_amount" show-value/>
+                      <slider min="{{ site_configs.coin_single_draw_amount }}" max="{{userInfo.balance_amount}}" name="draw_amount" show-value/>
                 </view>
                 <view class="weui-cell__ft">
                     <!-- <icon type="warn" size="23" color="#E64340"></icon> -->
                 </view>
             </view>
+
             <view class="weui-cell weui-cell_input weui-cell_vcode">
                 <view class="weui-cell__hd">
                     <view class="weui-label">验证码</view>
@@ -41,8 +55,7 @@
                 <verifyCode />
             </view>
         </view>
-    
-          
+              
           <view style="margin-top: 40px"></view>
           <view class="weui-btn-area">
             <button class="weui-btn" type="primary" style="width: 80%" formType="submit">
@@ -50,6 +63,10 @@
             </button>            
           </view>          
         </form>
+
+        <view class="content">        
+          <text class="notice">{{site_configs.coin_draw_text}}</text>
+      </view>
     
     </view>      
   </view>
@@ -90,7 +107,7 @@
         let draw_amount = e.detail.value.draw_amount || this.site_configs.coin_single_draw_amount
         let verify_code = e.detail.value.verify_code
 
-        if(draw_amount > this.userInfo.all_amount) {
+        if(draw_amount > this.userInfo.balance_amount) {
           wepy.showToast({title: '数量不足', icon: 'none'})
           return
         }
@@ -115,12 +132,16 @@
             draw_amount: draw_amount, 
             _rucaptcha: verify_code
           })
-                    
-          await this.$invoke('verifyCode', 'changeCodeImg')
-          if(res.status != 200){ return }                      
           
-          this.userInfo.all_amount = this.userInfo.all_amount - draw_amount
+          // console.log('res', res)
+          this.$invoke('verifyCode', 'changeCodeImg')
+          if(res.status && res.status != 200){ 
+            return 
+          }                      
+          
+          this.userInfo.balance_amount = this.userInfo.balance_amount - draw_amount
           wepy.navigateTo({url: '/pages/mine/draw_logs'})                    
+          
         } 
       },         
     }
