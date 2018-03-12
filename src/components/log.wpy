@@ -29,7 +29,7 @@
                   
                 </view>
                 <view class="weui-media-box__desc">
-                  {{draw_log.applied_at}}
+                  {{draw_log.handled_at}}
                 </view>
             </view>  
           </repeat>  
