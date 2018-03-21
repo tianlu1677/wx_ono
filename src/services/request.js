@@ -20,7 +20,10 @@ export default async function request (options, url) {
     if (!scopes.authSetting['scope.userInfo']) {
       await wepy.openSetting()  
       await loginInterface.login()
+    } else {
+      await loginInterface.login()  
     }
+    
     // return await request(options)    
   } else if (response.statusCode === 500) {
     wepy.showModal({

@@ -21,14 +21,16 @@
         <form class="weui-cells weui-cells_after-title" bindsubmit="formSubmit" bindreset="formReset">
           <view class="weui-toptips weui-toptips_warn" wx:if="{{errorInfo}}">{{errorInfo}}</view>
           <view class="weui-cells__title">地址</view>
-            <view class="weui-cells__title address">如: 0x80ee0965E0872876DfD779F2369488AE3e370345</view>
-            <view class="weui-cells weui-cells_after-title">
-              <view class="weui-cell">
-                  <view class="weui-cell__bd">
-                      <textarea class="weui-textarea" name="wallet" placeholder="" style="height: 3.3em" maxlength="42" value="{{userInfo.wallet}}" @input="checkValue" />                      
-                  </view>
-              </view>
+          <view class="weui-cells__title address">如:  0x80ee0965E0872876DfD779F2369488AE3e370345
           </view>
+          <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <textarea class="weui-textarea" name="wallet" placeholder="" style="height: 3.3em" maxlength="42" value="{{userInfo.wallet}}" @input="checkValue" ></textarea>                      
+                </view>
+            </view>
+          </view>
+
                  
           <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
@@ -49,7 +51,7 @@
               <view class="weui-cell__bd">
                 <input class="weui-input" name="phone" minlength="11" maxlength="11"
                   placeholder="提取时需短信验证" 
-                  value="{{userInfo.phone}}" @input="checkValue">
+                  value="{{userInfo.phone}}" @input="checkValue" />
               </view> 
             </view>
 
@@ -63,7 +65,8 @@
               <verifyCode />
             </view>
           </view>
-          
+
+          </view>
           
           <view class="weui-cells__tips">提交后不可更改，请仔细检查</view>  
 
@@ -118,11 +121,16 @@
       async formSubmit (e) {
         let wallet = e.detail.value.wallet
         let wechat = e.detail.value.wechat
-        let phone  = e.detail.value.phone
-        let verify_code = e.detail.value.verify_code
+        let phone  = e.detail.value.phone.trim()
+        let verify_code = e.detail.value.verify_code.trim()
         
-        if(wallet.length != 42 || wechat.length <= 3 || !isPhoneNum(phone)){
-          this.errorInfo = "请正确填写的地址/微信号/手机号"          
+       
+        if(wallet.length != 42 || wechat.length <= 3 || !isPhoneNum(phone)){      
+          this.errorInfo = "请填写正确的"
+          this.errorInfo = this.errorInfo + (wallet.length != 42 ? '地址/': '')
+          this.errorInfo = this.errorInfo + (wechat.length <= 3 ? '微信号/': '')
+          this.errorInfo = this.errorInfo + (!isPhoneNum(phone) ? '手机号/': '')
+          this.errorInfo = this.errorInfo.substring(0, this.errorInfo.length - 1)
           return
         }
 

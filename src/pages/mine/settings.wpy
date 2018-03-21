@@ -154,7 +154,11 @@
           return
         } else {
           const res = await api.activeInviteLog({verify_code: code})
-          wepy.showModal({title: '友情提示', content: `${res.msg}`, showCancel: false})
+          wepy.showModal({
+            title: '友情提示', 
+            content: `${res.msg}`, 
+            showCancel: false
+          })
         }
       }
     }
