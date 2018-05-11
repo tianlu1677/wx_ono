@@ -10,7 +10,7 @@ function isLogin(){
 
 async function createAccount(data = {}) {
   const res = await http({
-    url: host + '/api/coin/v1/accounts',
+    url: host + '/api/ono/v1/accounts',
     method: 'POST',
     data: data
   })
@@ -19,7 +19,7 @@ async function createAccount(data = {}) {
 
 async function updateAccount(data = {}) {
   const res = await http({
-    url: host + '/api/coin/v1/accounts/update_info',
+    url: host + '/api/ono/v1/accounts/update_info',
     method: 'PUT',
     data: data
   })
@@ -28,7 +28,7 @@ async function updateAccount(data = {}) {
 
 async function getUserInfo() {
   const res = await http({
-    url: host + '/api/coin/v1/accounts/info',
+    url: host + '/api/ono/v1/accounts/info',
     method: 'GET'
   })
   return res.data
@@ -36,7 +36,7 @@ async function getUserInfo() {
 
 async function getSiteConfigs() {
   const res = await http({
-    url: host + '/api/coin/v1/site_configs',
+    url: host + '/api/ono/v1/site_configs',
     method: 'GET'
   })
   return res.data
@@ -44,7 +44,7 @@ async function getSiteConfigs() {
 
 async function setWallet(data = {}) {
   const res = await http({
-    url: host + '/api/coin/v1/accounts/wallet',
+    url: host + '/api/ono/v1/accounts/wallet',
     method: 'PUT',
     data: data
   })
@@ -53,7 +53,7 @@ async function setWallet(data = {}) {
 
 async function setInvite(data = {}) {
   const res = await http({
-    url: host + '/api/coin/v1/accounts/invite',
+    url: host + '/api/ono/v1/accounts/invite',
     method: 'POST',
     data: data
   })
@@ -62,7 +62,7 @@ async function setInvite(data = {}) {
 
 async function setDrawLog(data={}){
   const res = await http({
-    url: host + '/api/coin/v1/bt_draw_logs',
+    url: host + '/api/ono/v1/bt_draw_logs',
     method: 'POST',
     data: data
   })
@@ -71,7 +71,7 @@ async function setDrawLog(data={}){
 
 async function getDrawLogs(data={}){
   const res = await http({
-    url: host + '/api/coin/v1/bt_draw_logs',
+    url: host + '/api/ono/v1/bt_draw_logs',
     method: 'GET',
     data: data
   })
@@ -80,7 +80,7 @@ async function getDrawLogs(data={}){
 
 async function getInviteLogs(data={}){
   const res = await http({
-    url: host + '/api/coin/v1/bt_invite_logs',
+    url: host + '/api/ono/v1/on_invite_logs',
     method: 'GET',
     data: data
   })
@@ -97,7 +97,7 @@ function getVerifyImg(key = 1 ) {
 
 async function activeInviteLog(data={}) {
   const res = await http({
-    url: host + '/api/coin/v1/bt_invite_logs/active',
+    url: host + '/api/ono/v1/on_invite_logs/active',
     method: 'POST',
     data: data
   })

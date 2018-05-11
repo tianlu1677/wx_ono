@@ -5,8 +5,8 @@ import api from './api'
 const loginInterface = {
   async getUserInfo () {
     const loginData = await wepy.login()
-    const userinfo = await wepy.getUserInfo()
-    // console.log('userinfo', userinfo)
+    console.log('loginData', loginData)
+    const userinfo = await wepy.getUserInfo()    
     userinfo.code = loginData.code
     return userinfo
   },
@@ -20,7 +20,6 @@ const loginInterface = {
     userinfo = await api.createAccount({userinfo: userinfoRaw.userInfo,
         code: userinfoRaw.code,        
       })
-    console.log('saveUserInfo', userinfo)    
     await wepy.setStorage({
       key: '_token',
       data: userinfo.token
@@ -31,8 +30,10 @@ const loginInterface = {
   async login (options = {}) {   
     try {      
       const token = wepy.getStorageSync('_token')
-      if(!token) {
-        const userinfo = await loginInterface.saveUserInfo()  
+      console.log('token', token)
+      // return
+      if(!token || token.length < 5) {        
+        const userinfo = await loginInterface.saveUserInfo()          
         wepy.reLaunch({url: '/pages/index'})
         return userinfo
       }                  
@@ -49,9 +50,10 @@ const loginInterface = {
         title: '友情提示',
         content: `登录失败，点击确定重新授权`,
       })
+
       if(res.confirm == true) {
         const scopes = await wepy.openSetting()  
-        // const scopes = wepy.getSetting()
+        
         if (scopes.authSetting['scope.userInfo'] == true) {                    
           const userinfo = await loginInterface.saveUserInfo()                
           console.log('授权成功')
