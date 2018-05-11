@@ -31,6 +31,10 @@ export default class extends wepy.app {
       'pages/mine/draw_money',
       'pages/mine/wallet',
       'pages/mine/how_play',
+      'pages/mine/about',
+      'pages/top_list',
+      'pages/gift'
+
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -49,6 +53,12 @@ export default class extends wepy.app {
       list: [{
         pagePath: 'pages/index',
         text: '首页',
+        iconPath: 'images/icons/homepage-gray.png',        
+        selectedIconPath: 'images/icons/homepage-blue.png'
+      }, 
+      {
+        pagePath: 'pages/top_list',
+        text: '榜单',
         iconPath: 'images/icons/homepage-gray.png',        
         selectedIconPath: 'images/icons/homepage-blue.png'
       }, 

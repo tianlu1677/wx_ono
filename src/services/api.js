@@ -25,6 +25,16 @@ async function updateAccount(data = {}) {
   })
   return res.data 
 }
+// 榜单
+
+async function getRankAccounts(data={}) {
+  const res = await http({
+    url: host + '/api/ono/v1/accounts/rank',
+    method: 'GET',
+    data: data
+  })
+  return res.data 
+}
 
 async function getUserInfo() {
   const res = await http({
@@ -117,5 +127,6 @@ module.exports = {
   getVerifyImg,
   updateAccount,
   activeInviteLog,
+  getRankAccounts,
 
 }

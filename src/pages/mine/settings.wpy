@@ -32,9 +32,9 @@
           </block>   -->
 
         </repeat>   
-        <view class="weui-cell" @tap="copyCode">
+        <!-- <view class="weui-cell" @tap="copyCode">
           <cell :cell.sync="copy_cell"></cell>
-        </view>  
+        </view>  --> 
       </view> 
 
       
@@ -105,13 +105,15 @@
     setCells () {
       const path = '../../images/icons'
       return [
-          {url: '/pages/mine/invite_active_logs', icon: `${path}/all-amount.png`, title: '累计获取', desc: `${this.userInfo.all_amount} NKC`, link: true},
+          {url: '/pages/mine/invite_active_logs', icon: `${path}/all-amount.png`, title: '累计获取', desc: `${this.userInfo.all_amount}`, link: true},
           
-          {url: '/pages/mine/draw_logs', icon: `${path}/draw-money.png`, title: '成功提取', desc: `${this.userInfo.draw_amount} NKC`, link: true},
+          // {url: '/pages/mine/draw_logs', icon: `${path}/draw-money.png`, title: '成功提取', desc: `${this.userInfo.draw_amount}`, link: true},
           // {url: '/pages/mine/invite_unactive_logs', icon: `${path}/wallet.png`, title: '待激活', desc: `${this.userInfo.unactive_amount} NKC`, link: true},
           
           {url: '/pages/mine/how_play', icon: `${path}/intro.png`, title: '吃糖攻略', desc: '', link: true},
-          {url: null, icon: `${path}/my-code.png`, title: '我的编号', desc: '点击复制 ', link: false}
+
+          {url: '/pages/mine/about', icon: `${path}/intro.png`, title: '关于项目', desc: '', link: true},
+          // {url: null, icon: `${path}/my-code.png`, title: '我的编号', desc: '点击复制 ', link: false}
         ]
     }
 

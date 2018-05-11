@@ -26,8 +26,8 @@
               <view class="weui-media-box__title">
                 {{userinfo.nickname}}
               </view>
-              <view class="weui-media-box__desc" @tap="copyCode" style="font-size: 10px" wx:if="{{userinfo.wallet}}">
-                {{userinfo.wallet}}
+              <view class="weui-media-box__desc" style="font-size: 10px" wx:if="{{userinfo.phone}}">
+                {{userinfo.phone}}
               </view>
              </view>
         </view>
@@ -46,7 +46,8 @@
         id: String,
         nickname: String,
         avatar_url: String,
-        wallet: String
+        wallet: String,
+        phone: String
       }
     }
 
