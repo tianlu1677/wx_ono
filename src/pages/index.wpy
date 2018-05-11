@@ -7,7 +7,6 @@
       font-size: 16px;
       padding: 10px;
       color: #635a5a;
-      
     }
     .notice {
       // margin-left: 10px;
@@ -21,7 +20,7 @@
     <view class="page__bd">
       <avatar :userinfo.sync="userInfo"></avatar>
       <!-- <view style="margin-top: 20px"></view> -->
-      
+
       <view class="content">
         <image src="../images/icons/notice.png" style="width: 24px; height: 24px; float: left;" />
         <text class="notice">{{site_configs.ono_mainpage_tips}}</text>
@@ -29,24 +28,45 @@
 
       <image
         src="{{site_configs.ono_mainpage_png}}"
-        style="width: 100%;"    
-        mode="widthFix"        
-        /> 
+        style="width: 100%;"
+        mode="widthFix"
+        />
       <view style="margin-top: 20px"></view>
-      <button class="weui-button" type="primary" style="width: 80%" open-type="share">{{site_configs.ono_mainpage_btn_text}}</button>
 
-    </view>          
+      <Modal
+        :showModal.sync="modal_showModal"
+        :showConfirm="modal_showConfirm"
+        :title="modal_title"
+        :showCancel="modal_showCancel"
+        @handleModalConfirm.user="handleConfirm"
+        :cancelText="modal_cancalText"
+        cancelTextColor=""
+        titleTextAlign="center">
+        <view slot="content">
+          <view>{{site_configs.ono_mainpage_getphone_tips}}</view>
+          <view>{{site_configs.ono_hyperlink_text}}</view>
+        </view>
+        <view slot="cancel">
+        </view>
+        <view slot="confirm">
+          <button class="confirm" open-type="getPhoneNumber" @tap="getPhoneNumber">确定</button>
+        </view>
+      </Modal>
+
+     <button class="weui-button" type="primary" style="width: 80%" @tap="handleModelView">{{site_configs.ono_mainpage_btn_text}}</button>
+
+    </view>
   </view>
 </template>
 
 <script>
-  import wepy from 'wepy'  
+  import wepy from 'wepy'
   import Avatar from '../components/avatar'
   import UserInfoMixin from '../mixins/userinfo_mixin'
   import loginInterface from '../services/login'
-  import api from '../services/api'  
+  import api from '../services/api'
   import { Base64 } from 'js-base64'
-
+  import Modal from '../components/modal';
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: 'ONO小助手'
@@ -56,34 +76,49 @@
 
     components = {
       avatar: Avatar,
+      Modal: Modal,
+
     }
-    
+
     data = {
-      canIUse: wepy.canIUse('button.open-type.getUserInfo')
-      // userInfo: {},
-      // site_configs: {}    
+      canIUse: wepy.canIUse('button.open-type.getUserInfo'),
+
+      modal_showModal: false,
+      modal_showConfirm: true,
+      modal_showCancel: false,
+      modal_title: '提示',
+      modal_cancalText: '取消',
     }
 
     computed = {
-      
+
     }
 
     methods = {
       onShareAppMessage (res) {
         const shareParentId = Base64.encode('3427' + this.userInfo.id)
-        // const shareParentId = 17
         console.log(shareParentId)
         return {
-          title: `${this.site_configs.coin_index_share_title}`,
+          title: `${this.site_configs.ono_mainpage_share_title  }`,
           path: `/pages/index?share=${shareParentId}`,
-          imageUrl: this.site_configs.coin_index_share_img,
-          success: function(res) {            
+          imageUrl: this.site_configs.ono_mainpage_share_page,
+          success: function(res) {
             console.log('res', res)
           },
           fail: function(res) {
             console.log('转发取消')
           }
         }
+      },
+      getPhoneNumber(e) {
+        console.log(e.detail)
+        // 如果授权成功，调用远程的接口。
+        // 取消的话，则
+
+      },
+      async handleModelView(e) {
+        this.modal_showModal = true
+        this.$apply()
       },
       bindGetUserInfo(e) {
         console.log('e', e)
@@ -99,18 +134,18 @@
             content: `你获得了 ${this.site_configs.coin_new_user_amount} NKC, 个人中心可查看 `,
             showCancel: false
         })
-        
-      }     
+
+      }
     }
 
-    async onLoad(options) {            
+    async onLoad(options) {
       await this.loadSiteConfigs()
-      await this.loadUserInfo()        
-      
+      await this.loadUserInfo()
+
       wepy.showShareMenu({
         withShareTicket: true
-      })     
-      
+      })
+
       // await this.showWelcomeInfo()
     }
   }

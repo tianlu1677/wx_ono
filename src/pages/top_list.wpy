@@ -1,14 +1,38 @@
 <style lang="less">
- .invite_log {
-    
+  .top-list {
+    .current-account {
+      border-bottom: 1px solid #B2B2B2;
+      margin-bottom: 30px;
+    }
     .weui-media-box__title_in-text {
-      .count {
-        text-align: right;
-        float: right;
-        font-weight: bold;
-        color: #d6ab12;
-        // font-size: 20px;
+      .content {
+        display: flex;
+        line-height: 50px;
+        .number {
+          width: 20px;
+          margin-right: 20px;
+        }
+        .avatar {
+          width: 50px;
+          height: 50px;
+          > image {
+            border-radius: 50px;
+          }
+        }
+        .nickname {
+          font-size: 14px;
+          margin-left: 10px;
+        }
+        .count {
+          text-align: right;
+          flex: 1;
+          float: right;
+          font-weight: bold;
+          color: #d6ab12;
+
+        }
       }
+
     }
     .weui-media-box {
       padding-top: 5px;
@@ -16,49 +40,70 @@
     }
   }
 </style>
-
 <template>
-  <view class="weui-panel weui-panel_access invite_log">
-      <!-- <view class="weui-panel__hd">文字组合列表</view> -->
-        <view class="weui-panel__bd">
-          <repeat for="{{accounts}}" key="key" item="account" index="index">       
-            <view class="weui-media-box weui-media-box_text">
-                <view class="weui-media-box__title weui-media-box__title_in-text">
-                  <text style="font-size: 14px;">xxxx</text>
-                  <text class="count">xxxxx</text>
-                  
-                </view>
-                <view class="weui-media-box__desc">
-                  <!-- {{draw_log.handled_at}} -->
-                  sasdada
-                </view>
-            </view>  
-          </repeat>  
-                    
-        </view>
-        <view class="weui-panel__ft">            
-            <view class="weui-cell weui-cell_access weui-cell_link" style="text-align: center">
-                <view class="weui-cell__bd" wx:if="{{accounts.length == 0}}">暂无记录
-                </view>
-                <view class="weui-cell__bd" @tap="loadMore" wx:if="{{accounts.length != 0 && !last_page}}">查看更多
-                </view>
-                <view class="weui-cell__bd" wx:if="{{last_page}}">已加载全部</view>
-                <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
-            </view>
 
+  <view class="weui-panel weui-panel_access top-list container">
+    <view class="weui-panel__bd current-account">
+        <view class="weui-media-box weui-media-box_text ">
+          <view class="weui-media-box__title weui-media-box__title_in-text">
+            <view class="content">
+              <text class="number">{{100}}</text>
+              <view class="avatar">
+                <image src="{{userInfo.avatar_url}}" style="width: 50px; height: 50px; float: left;"/>
+                <text class="nickname">{{userInfo.nickname}}</text>
+              </view>
+              <text class="count">122</text>
+            </view>
+          </view>
         </view>
     </view>
+
+    <!-- <view class="weui-panel__hd">文字组合列表</view> -->
+    <view class="weui-panel__bd">
+      <repeat for="{{accounts}}" key="key" item="account" index="index">
+        <view class="weui-media-box weui-media-box_text">
+          <view class="weui-media-box__title weui-media-box__title_in-text">
+
+            <view class="content">
+              <text class="number">{{index + 1}}</text>
+              <view class="avatar">
+                <image src="{{account.avatar_url}}" style="width: 50px; height: 50px; float: left;"/>
+                <text class="nickname">{{account.nickname}}</text>
+              </view>
+
+              <text class="count">122</text>
+            </view>
+
+          </view>
+
+        </view>
+      </repeat>
+
+    </view>
+    <view class="weui-panel__ft">
+      <view class="weui-cell weui-cell_access weui-cell_link" style="text-align: center">
+        <view class="weui-cell__bd" wx:if="{{accounts.length == 0}}">暂无记录
+        </view>
+        <view class="weui-cell__bd" @tap="loadMore" wx:if="{{accounts.length != 0 && !last_page}}">查看更多
+        </view>
+        <view class="weui-cell__bd" wx:if="{{last_page}}">已加载全部</view>
+        <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
+      </view>
+
+    </view>
+  </view>
 </template>
 
 <script>
-  import wepy from 'wepy'
-  import UserInfoMixin from '../mixins/userinfo_mixin'
-  import api from '../services/api'
+  import wepy from 'wepy';
+  import UserInfoMixin from '../mixins/userinfo_mixin';
+  import api from '../services/api';
+
   export default class Index extends wepy.page {
     config = {
-        "navigationBarTitleText": "榜单"
+      'navigationBarTitleText': '榜单'
     };
-    mixins = [UserInfoMixin]
+    mixins = [UserInfoMixin];
 
     data = {
       draw_logs: [],
@@ -67,42 +112,39 @@
       last_page: false,
       next_page: 1,
       parent_name: ''
-    }
-    
-    events = {
+    };
 
-    }
+    events = {};
 
-    watch = {
-      
-    }
+    watch = {};
 
     methods = {
-      async loadMore() {        
-        await this.getMoreAccounts()
+      async loadMore() {
+        await this.getMoreAccounts();
       }
-    }
+    };
+
     async getMoreAccounts() {
-      if (this.last_page || this.last_page === 0) {      
-        return
-      }
-      wepy.showLoading({title: '加载中', mask: true})      
-      let res = {}
-      res = await api.getRankAccounts({page: this.next_page})
-      this.accounts = this.accounts.concat(res.accounts)
-      this.first_page = res.first_page
-      this.last_page = res.last_page
-      this.next_page = res.next_page
-      wepy.stopPullDownRefresh()
-      this.$apply()     
-      wepy.hideLoading()
+      // if (this.last_page || this.last_page === 0) {
+      //   return;
+      // }
+      wepy.showLoading({ title: '加载中', mask: true });
+      let res = {};
+      res = await api.getRankAccounts({ page: this.next_page });
+      this.accounts = this.accounts.concat(res.accounts);
+      this.first_page = res.first_page;
+      this.last_page = res.last_page;
+      this.next_page = res.next_page;
+      wepy.stopPullDownRefresh();
+      this.$apply();
+      wepy.hideLoading();
     }
 
     async onLoad() {
-      await this.loadSiteConfigs()
-      await this.loadUserInfo()
-      wepy.setNavigationBarTitle({title: this.site_configs.ono_title_for_rank})
-      await this.getMoreAccounts()
+      await this.loadSiteConfigs();
+      await this.loadUserInfo();
+      wepy.setNavigationBarTitle({ title: this.site_configs.ono_title_for_rank });
+      await this.getMoreAccounts();
     }
   }
 </script>

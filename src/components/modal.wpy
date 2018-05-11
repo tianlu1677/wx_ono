@@ -1,0 +1,185 @@
+<style lang="less">
+    .modalBox {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 999;
+        .background {
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 999;
+        }
+        .modalBackground {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666666;
+            .modal {
+                width: 80%;
+                margin: auto;
+                background: #ffffff;
+                border-radius: 10rpx;
+                box-sizing: border-box;
+                padding: 20rpx;
+                font-size: 36rpx;
+                border: 1rpx solid #ddd;
+                .title {
+                    /*border-bottom: 1rpx solid #ddd;*/
+                    box-sizing: border-box;
+                    padding: 10rpx 0 20rpx 0;
+                }
+                .content {
+                    box-sizing: border-box;
+                    padding: 20rpx;
+                    overflow: hidden;
+                    
+                }
+                .btns {
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-around;
+                    align-items: center;
+                    box-sizing: border-box;
+                    padding: 20rpx 0 10rpx 0;
+                    border-top: 1rpx solid #ddd;
+                    view {
+                        flex: 1;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+</style>
+<template>
+    <view class="modalBox" wx:if="{{showModal}}" catchtouchmove>
+        <view class="background"
+              catchtouchmove
+              @tap="handleBackground"
+              wx:if="{{showBackground}}"></view>
+        <view class="modalBackground" catchtouchmove>
+            <view class="modal">
+                <view class="title"
+                      style="text-align: {{titleTextAlign}}"
+                      wx:if="{{showTitle}}"
+                >{{title}}</view>
+                <view class="content">
+                    <slot name="content"></slot>
+                </view>
+                <view class="btns">
+                  
+                    <view class="cancel"
+                          wx:if="{{showCancel}}"
+                          style="color: {{cancelTextColor}}"
+                          @tap="handleCancel"
+                    >
+                        {{cancelText}}
+                    </view>
+                  
+                  <slot name="confirm">  
+                    <view class="confirm"
+                          wx:if="{{showConfirm}}"
+                          style="color: {{confirmTextColor}};border-left:{{showConfirm && showCancel && confirmBorder}}"
+                          @tap="handleConfirm"
+                    >
+                        {{confirmText}}
+                    </view>
+                  </slot>  
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Modal extends wepy.component {
+
+    data = {}
+    events = {}
+    methods = {
+      handleBackground() {
+        this.showModal = false
+        this.$emit('handleModalBackground')
+      },
+      handleCancel() {
+        this.showModal = false
+        this.$emit('handleModalCancel')
+      },
+      handleConfirm() {
+        this.$emit('handleModalConfirm')
+      }
+    }
+    props = {
+      showModal: {
+        type: Boolean,
+        default: false,
+        twoWay: true
+      },
+      showTitle: {
+        type: Boolean,
+        default: false,
+        twoWay: true
+      },
+      showBackground: {
+        type: Boolean,
+        default: true
+      },
+      title: {
+        type: String,
+        default: '标题'
+      },
+      titleColor: {
+        type: String,
+        default: '#666'
+      },
+      showConfirm: {
+        type: Boolean,
+        default: true
+      },
+      showCancel: {
+        type: Boolean,
+        default: true
+      },
+      confirmText: {
+        type: String,
+        default: '确定'
+      },
+      cancelText: {
+        type: String,
+        default: '取消'
+      },
+      confirmTextColor: {
+        type: String,
+        default: '#666',
+      },
+      cancelTextColor: {
+        type: String,
+        default: '#666',
+      },
+      modalContent: {
+        type: String,
+        default: ''
+      },
+      titleTextAlign: {
+        type: String,
+        default: 'left'
+      },
+      confirmBorder: {
+        type: String,
+        default: '1rpx solid #ddd'
+      }
+    }
+  }
+</script>
