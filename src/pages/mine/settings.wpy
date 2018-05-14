@@ -40,9 +40,9 @@
       
        <view style="margin-top: 20px"></view>
 
-      <button class="weui-btn" type="primary" style="width: 80%" @tap="checkWallet">   申请提取
+      <!-- <button class="weui-btn" type="primary" style="width: 80%" @tap="checkWallet">   申请提取
       </button>
-      
+       -->
       <view style="margin-top: 40px"></view>
       
       <block wx:if="{{userInfo.role == 'admin' }}">

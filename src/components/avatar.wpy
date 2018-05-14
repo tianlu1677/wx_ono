@@ -6,6 +6,13 @@
       height: 100rpx;
       border-radius: 50%;
     }
+     .open-data-avatar {
+      width: 60px; 
+      height: 60px;     
+      border-radius: 50%; 
+      overflow: hidden; 
+      display:block
+    }
   }
   .userinfo-nickname {
     text-align: center;
@@ -20,14 +27,17 @@
        <view class="weui-panel weui-panel_access">
           <view class="weui-media-box weui-media-box_appmsg">
             <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-              <image class="weui-media-box__thumb" src="{{userinfo.avatar_url}}" />
+              <!-- <image class="weui-media-box__thumb" src="{{userinfo.avatar_url}}" /> -->
+              <open-data type="userAvatarUrl" class="open-data-avatar weui-media-box__thumb"></open-data>
             </view>
             <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
               <view class="weui-media-box__title">
                 {{userinfo.nickname}}
               </view>
               <view class="weui-media-box__desc" style="font-size: 10px" wx:if="{{userinfo.phone}}">
-                {{userinfo.phone}}
+
+
+                <!-- {{userinfo.phone}} -->
               </view>
              </view>
         </view>

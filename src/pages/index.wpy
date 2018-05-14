@@ -12,6 +12,12 @@
       // margin-left: 10px;
       // margin-right: 10px;
     }
+    .link {
+      margin-top: 10px;
+      text-align: center;
+      color: gray;
+      font-size: 12px;
+    }
   }
 </style>
 
@@ -19,7 +25,7 @@
   <view class="container home">
     <view class="page__bd">
       <avatar :userinfo.sync="userInfo"></avatar>
-      <!-- <view style="margin-top: 20px"></view> -->
+      
 
       <view class="content">
         <image src="../images/icons/notice.png" style="width: 24px; height: 24px; float: left;" />
@@ -38,23 +44,36 @@
         :showConfirm="modal_showConfirm"
         :title="modal_title"
         :showCancel="modal_showCancel"
+        @handleModalBackground.user="handleBackground"
         @handleModalConfirm.user="handleConfirm"
         :cancelText="modal_cancalText"
         cancelTextColor=""
         titleTextAlign="center">
         <view slot="content">
           <view>{{site_configs.ono_mainpage_getphone_tips}}</view>
-          <view>{{site_configs.ono_hyperlink_text}}</view>
+          <view class="link" @tap="goIntro">{{site_configs.ono_hyperlink_text}}</view>
         </view>
         <view slot="cancel">
         </view>
-        <view slot="confirm">
-          <button class="confirm" open-type="getPhoneNumber" @tap="getPhoneNumber">确定</button>
+
+        <view slot="confirm" wx:if="{{logined && !phone}}">
+          <button class="weui-button" style="width: 100%" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">好的</button>
         </view>
       </Modal>
 
-     <button class="weui-button" type="primary" style="width: 80%" @tap="handleModelView">{{site_configs.ono_mainpage_btn_text}}</button>
+      <button class="weui-button weui-btn weui-btn_default" type="primary" style="width: 80%" open-type="share"  wx:if="{{showShare}}"
+      >
+        {{site_configs.ono_mainpage_btn_text}}
+      </button>
+      </view>
 
+     <button class="weui-button" type="primary" style="width: 80%" 
+          @tap="handleModelView"
+          wx:if="{{showPhone}}">        
+          {{site_configs.ono_mainpage_btn_text}}
+     </button>
+     
+    <button class="weui-button" type="primary" style="width: 80%" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" wx:if="{{showLogin}}">{{site_configs.ono_mainpage_btn_text}}</button>
     </view>
   </view>
 </template>
@@ -63,35 +82,43 @@
   import wepy from 'wepy'
   import Avatar from '../components/avatar'
   import UserInfoMixin from '../mixins/userinfo_mixin'
-  import loginInterface from '../services/login'
+  import LoginMixin from '../mixins/login_mixin'
   import api from '../services/api'
   import { Base64 } from 'js-base64'
   import Modal from '../components/modal';
+  import loginInterface from '../services/login_request'
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: 'ONO小助手'
     }
-
-    mixins = [UserInfoMixin]
+    mixins = [UserInfoMixin, LoginMixin]
 
     components = {
       avatar: Avatar,
       Modal: Modal,
-
     }
 
     data = {
-      canIUse: wepy.canIUse('button.open-type.getUserInfo'),
-
-      modal_showModal: false,
-      modal_showConfirm: true,
-      modal_showCancel: false,
-      modal_title: '提示',
-      modal_cancalText: '取消',
+      // canIUse: wepy.canIUse('button.open-type.getUserInfo'),
+      // modal_showModal: false,
+      // modal_showConfirm: true,
+      // modal_showCancel: false,
+      // modal_title: '提示',
+      // modal_cancalText: '取消',      
+      // logined: false,
+      // phone: false
     }
 
     computed = {
-
+      showShare() {
+        return this.logined && this.phone
+      },
+      showLogin() {
+        return !this.logined
+      },
+      showPhone() {        
+        return this.logined && !this.phone
+      }
     }
 
     methods = {
@@ -100,7 +127,7 @@
         console.log(shareParentId)
         return {
           title: `${this.site_configs.ono_mainpage_share_title  }`,
-          path: `/pages/index?share=${shareParentId}`,
+          path: `/pages/gift?share=${shareParentId}`,
           imageUrl: this.site_configs.ono_mainpage_share_page,
           success: function(res) {
             console.log('res', res)
@@ -110,37 +137,40 @@
           }
         }
       },
-      getPhoneNumber(e) {
-        console.log(e.detail)
-        // 如果授权成功，调用远程的接口。
-        // 取消的话，则
-
+      async bindGetUserInfo(e) {
+        this._bindGetUserInfo(e)
       },
-      async handleModelView(e) {
-        this.modal_showModal = true
-        this.$apply()
+      async getPhoneNumber(e) {  
+        this._getPhoneNumber(e)
       },
-      bindGetUserInfo(e) {
-        console.log('e', e)
+      handleModelView(e) {
+        this._handleModelView(e)      
+      }, 
+      goIntro() {
+        wepy.navigateTo({url: '/pages/intro'})
       }
     }
 
     async showWelcomeInfo() {
       if(this.userInfo.id > 0 && this.userInfo.first_login == true){
         await api.updateAccount({bt_account: {first_login: false }})
-
         wepy.showModal({
             title: '恭喜',
             content: `你获得了 ${this.site_configs.coin_new_user_amount} NKC, 个人中心可查看 `,
             showCancel: false
         })
-
       }
     }
 
     async onLoad(options) {
       await this.loadSiteConfigs()
       await this.loadUserInfo()
+
+      if(this.userInfo) {
+        this.logined = !!this.userInfo.id
+        this.phone = !!this.userInfo.phone
+        this.$apply()
+      }
 
       wepy.showShareMenu({
         withShareTicket: true

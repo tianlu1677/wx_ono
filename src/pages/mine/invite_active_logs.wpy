@@ -14,11 +14,25 @@
       padding-top: 5px;
       padding-bottom: 2px;
     }
+    .swiper_container {
+        height: 55rpx;
+        width: 80vw;
+      }
+
+      .swiper_item {
+        font-size: 25rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        letter-spacing: 2px;
+      }
   }
 </style>
 
 <template>
-  <view class="container">
+  <view>
+    <ScrollTip :tips.sync="tips"></ScrollTip>
+
     <log></log>
   </view>
 </template>
@@ -27,36 +41,38 @@
   import wepy from 'wepy'
   import api from '../../services/api'
   import Log from '../../components/log'
+  import ScrollTip from '../../components/scroll_tip'
   
   export default class InviteActiveLogs extends wepy.page {
     config = {
         "navigationBarTitleText": "获取记录"
     }
 
-    data = {      
-      
+    data = {   
+      site_configs: {}
     }
     
     components = {
       log: Log, 
+      ScrollTip: ScrollTip,
     }
-
     computed = {
-     
+      tips() {
+        return this.site_configs.ono_scroll_tips
+      }
     }
-
     methods = {
       
     }
-
-    
 
     events = {
 
     }
 
     async onLoad() {
-      
+      const res = await wepy.getStorage({key: 'site_configs'})
+      this.site_configs = res.data
+      this.$apply()
     }
   }
 </script>

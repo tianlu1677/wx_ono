@@ -29,7 +29,7 @@ const loginInterface = {
           parent_id: parent_id
         }
       })
-      const scopes = await wepy.getSetting()
+      // const scopes = await wepy.getSetting()
       // console.log('scopes', scopes)
       // if (scopes.authSetting['scope.userInfo']) {
         // wepy.reLaunch({url: '/pages/index'})                
@@ -45,21 +45,9 @@ const loginInterface = {
       return userinfo.data
     } catch (e) {      
       wepy.showModal({
-        title: '友情提示',
+        title: '友情提示1',
         content: `获取用户信息失败， 请关闭重新进入 ${e.errMsg}`
-      })
-
-      // wepy.showModal({
-      //     title: '友情提示',
-      //     content: '获取用户信息失败，您不授权无法进入'
-      // }).then(function(res) {
-      //   if (res.confirm) {
-      //     console.log('confirm')
-      //     wepy.openSetting() 
-      //     await this.login()
-      //     // await loginInterface.login()
-      //   }
-      // })
+      }) 
     }
   }
 }

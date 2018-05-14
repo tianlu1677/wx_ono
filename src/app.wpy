@@ -12,6 +12,13 @@
     box-sizing: border-box;
     background-color: #f8f8f8;
   }
+  .open-data-avatar {
+    width: 45px; 
+    height: 45px;     
+    border-radius: 50%; 
+    overflow: hidden; 
+    display:block
+  }
 </style>
 
 <script>
@@ -30,8 +37,9 @@ export default class extends wepy.app {
       'pages/mine/draw_logs',
       'pages/mine/draw_money',
       'pages/mine/wallet',
-      'pages/mine/how_play',
+      'pages/mine/how_play',      
       'pages/mine/about',
+      'pages/intro',
       'pages/top_list',
       'pages/gift'
 
@@ -59,13 +67,13 @@ export default class extends wepy.app {
       {
         pagePath: 'pages/top_list',
         text: '榜单',
-        iconPath: 'images/icons/homepage-gray.png',        
-        selectedIconPath: 'images/icons/homepage-blue.png'
+        iconPath: 'images/icons/rank-gray.png',        
+        selectedIconPath: 'images/icons/rank-green.png'
       }, 
            
       {
         pagePath: 'pages/mine/settings',
-        text: '我的',
+        text: '个人中心',
         iconPath: 'images/icons/person-gray.png',
         selectedIconPath: 'images/icons/person-green.png'
       }
@@ -103,7 +111,8 @@ export default class extends wepy.app {
     this.globalData.userInfo = userInfo
     if(userInfo && options.query) {      
       const share = options.query.share
-      await api.setInvite({share: share})      
+      // 邀请
+      // await api.setInvite({share: share})      
     }
   }
 }

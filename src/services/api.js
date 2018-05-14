@@ -17,6 +17,16 @@ async function createAccount(data = {}) {
   return res.data
 }
 
+async function updatePhone(data={}) {
+  const res = await http({
+    url: host + '/api/ono/v1/accounts/update_phone',
+    method: 'PUT',
+    data: data
+  })
+  return res.data
+}
+
+
 async function updateAccount(data = {}) {
   const res = await http({
     url: host + '/api/ono/v1/accounts/update_info',
@@ -128,5 +138,6 @@ module.exports = {
   updateAccount,
   activeInviteLog,
   getRankAccounts,
+  updatePhone
 
 }

@@ -14,6 +14,29 @@
       padding-top: 5px;
       padding-bottom: 2px;
     }
+    .content {
+      display: flex;
+      .desc {
+        margin-left: 10px;
+        margin-top: 5px;
+        font-size: 14px;        
+        .log {
+          
+        }
+        .time {
+          font-size: 12px;
+          color: gray;
+        }
+
+      }
+      .right {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+      }
+    }
+    
   }
 </style>
 
@@ -21,25 +44,38 @@
   <view class="weui-panel weui-panel_access invite_log">
       <!-- <view class="weui-panel__hd">文字组合列表</view> -->
         <view class="weui-panel__bd">
-          <repeat for="{{draw_logs}}" key="key" item="draw_log" index="index">       
+          <repeat for="{{invite_logs}}" key="key" item="invite_log" index="index">       
             <view class="weui-media-box weui-media-box_text">
-                <view class="weui-media-box__title weui-media-box__title_in-text">
-                  <text style="font-size: 14px;">{{draw_log.handle_type_text}}</text>
-                  <text class="count">{{draw_log.draw_amount}}</text>
+
+                <view class="weui-media-box__title weui-media-box__title_in-text content"
+                >
+                  <image
+                    src="{{invite_log.account_avatar_url}}"
+                    style="width: 100%;"
+                    mode="widthFix"
+                    style="width: 45px; heigth: 45px; border-radius: 50%;"
+                    />  
+                    <view class="desc">
+                      <text class="log">{{invite_log.record_log}}</text>
+                      <text class="time">
+                        {{invite_log.created_at}}
+                    </text>
+                    </view>
                   
-                </view>
-                <view class="weui-media-box__desc">
-                  {{draw_log.handled_at}}
-                </view>
+                  <view class="right">
+                    <text class="count">+{{invite_log.obtain_amount}}</text>
+                    <text class="count">{{invite_log.handle_type}}</text>
+                  </view>                                  
+                </view>                
             </view>  
           </repeat>  
                     
         </view>
         <view class="weui-panel__ft">            
             <view class="weui-cell weui-cell_access weui-cell_link" style="text-align: center">
-                <view class="weui-cell__bd" wx:if="{{draw_logs.length == 0}}">暂无记录
+                <view class="weui-cell__bd" wx:if="{{invite_logs.length == 0}}">暂无记录
                 </view>
-                <view class="weui-cell__bd" @tap="loadMore" wx:if="{{draw_logs.length != 0 && !last_page}}">查看更多
+                <view class="weui-cell__bd" @tap="loadMore" wx:if="{{invite_logs.length != 0 && !last_page}}">查看更多
                 </view>
                 <view class="weui-cell__bd" wx:if="{{last_page}}">已加载全部</view>
                 <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
@@ -58,7 +94,7 @@
     }
 
     data = {
-      draw_logs: [],
+      invite_logs: [],
       first_page: false,
       last_page: false,
       next_page: 1,
@@ -85,16 +121,18 @@
       }
       wepy.showLoading({title: '加载中', mask: true})      
       let res = {}
-      if(this.parent_name == 'DrawLogs'){
-        res = await api.getDrawLogs({page: this.next_page})        
-        this.draw_logs = this.draw_logs.concat(res.bt_draw_logs)
-      } else if(this.parent_name == 'InviteActiveLogs') {
-        res = await api.getInviteLogs({page: this.next_page, status: 'active'})
-        this.draw_logs = this.draw_logs.concat(res.bt_invite_logs)
-      } else {
-        res = await api.getInviteLogs({page: this.next_page, status: 'unactive'})
-        this.draw_logs = this.draw_logs.concat(res.bt_invite_logs)
-      }     
+      // if(this.parent_name == 'DrawLogs'){
+      //   res = await api.getDrawLogs({page: this.next_page})        
+      //   this.invite_logs = this.invite_logs.concat(res.bt_invite_logs)
+      // } else if(this.parent_name == 'InviteActiveLogs') {
+      //   res = await api.getInviteLogs({page: this.next_page, status: 'active'})
+      //   this.invite_logs = this.invite_logs.concat(res.bt_invite_logs)
+      // } else {
+      //   res = await api.getInviteLogs({page: this.next_page, status: 'unactive'})
+      //   this.invite_logs = this.invite_logs.concat(res.bt_invite_logs)
+      // }  
+      res = await api.getInviteLogs({page: this.next_page})
+      this.invite_logs = this.invite_logs.concat(res.on_invite_logs)
       
       this.first_page = res.first_page
       this.last_page = res.last_page
@@ -106,7 +144,7 @@
 
     async onLoad() {
       // console.log('this.$parent', this.$parent.$name)
-      this.parent_name = this.$parent.$name      
+      // this.parent_name = this.$parent.$name      
       await this.getDrawLogs()        
     }
   }

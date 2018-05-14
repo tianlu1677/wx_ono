@@ -1,5 +1,5 @@
 import wepy from 'wepy'
-import loginInterface from './login'
+// import loginInterface from './login'
 
 export default async function request (options, url) {
   if (options.header) {
@@ -16,12 +16,14 @@ export default async function request (options, url) {
   })
 
   if (response.statusCode === 403) {    
-    const scopes = await wepy.getSetting()    
+    const scopes = await wepy.getSetting() 
+    console.log('scopes', scopes)   
     if (!scopes.authSetting['scope.userInfo']) {
-      await wepy.openSetting()  
-      await loginInterface.login()
+      return
+      // await wepy.openSetting()  
+      // await loginInterface.login()
     } else {
-      await loginInterface.login()  
+      // await loginInterface.login()  
     }
     
     // return await request(options)    

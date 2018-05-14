@@ -4,7 +4,7 @@ import api from '../services/api'
 export default class UserInfoMixin extends wepy.mixin {
   data = {
     userInfo: {
-      id: -1,
+      id: null,
       nickname: '未登录',
       avatar_url: '/images/unlogin.png', 
       all_amount: 0,
