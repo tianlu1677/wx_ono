@@ -17,7 +17,7 @@
       class="swiper-wrapper"
       wx:if="{{tips}}"
       >
-      <view>
+      <view style="color: white">
 
 
       <block >

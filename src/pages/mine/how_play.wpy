@@ -18,12 +18,13 @@
 <script>
   import wepy from 'wepy';
   import UserInfoMixin from '../../mixins/userinfo_mixin';
+  import api from '../../services/api';
   import { Base64 } from 'js-base64';
   import HTMLParser from '../../components/html_parser';
 
   export default class Info extends wepy.page {
     config = {
-      'navigationBarTitleText': '使用攻略'
+      'navigationBarTitleText': '项目介绍'
     };
 
     mixins = [UserInfoMixin];
@@ -58,9 +59,10 @@
 
     events = {};
 
-    onLoad() {
+    async onLoad() {
       this.loadSiteConfigs();
-      this.content = this.site_configs.ono_how_to_play;
+      const text = await api.agreement()
+      this.content = text.ono_how_to_play;
       this.$apply();
       this.$invoke('htmlParser', 'htmlParserNotice');
     }

@@ -158,7 +158,7 @@
 
         await api.updateAccount({ on_account: { last_amount: this.userInfo.all_amount } });
         const res = await wepy.showModal({
-          title: '恭喜',
+          title: '',
           content: this.userInfo.message || '',
           showCancel: false
         })
@@ -188,6 +188,9 @@
         this.logined = !!this.userInfo.id;
         this.phone = !!this.userInfo.phone;
       }
+
+      this.showWelcomeInfo()
+
       console.log('site_config', this.site_configs)
       this.$apply();
 
@@ -196,7 +199,7 @@
       });
     }
     async onLoad(options) {
-      this.showWelcomeInfo()
+
     }
   }
 </script>

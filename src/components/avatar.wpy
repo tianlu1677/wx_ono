@@ -7,10 +7,10 @@
       border-radius: 50%;
     }
      .open-data-avatar {
-      width: 60px; 
-      height: 60px;     
-      border-radius: 50%; 
-      overflow: hidden; 
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
       display:block
     }
   }
@@ -21,7 +21,7 @@
   }
 </style>
 
-<template>      
+<template>
   <view class="weui-panel userinfo">
     <view class="weui-panel__bd">
        <view class="weui-panel weui-panel_access">
@@ -35,9 +35,7 @@
                 {{userinfo.nickname}}
               </view>
               <view class="weui-media-box__desc" style="font-size: 10px" wx:if="{{userinfo.phone}}">
-
-
-                <!-- {{userinfo.phone}} -->
+                 {{small_phone}}
               </view>
              </view>
         </view>
@@ -50,7 +48,7 @@
 <script>
   import wepy from 'wepy'
 
-  export default class Avatar extends wepy.component {        
+  export default class Avatar extends wepy.component {
     props = {
       userinfo: {
         id: String,
@@ -58,6 +56,18 @@
         avatar_url: String,
         wallet: String,
         phone: String
+      }
+    }
+
+    computed = {
+      small_phone() {
+        let p = this.userinfo.phone
+        if (p) {
+          return p.substr(0, 4) + '***' + p.substr(8,10)
+        } else {
+          return ''
+        }
+
       }
     }
 
@@ -70,7 +80,7 @@
         })
 
         wepy.setClipboardData({
-          data: `我的地址：${this.userinfo.wallet}`          
+          data: `我的地址：${this.userinfo.wallet}`
         })
       }
     }
