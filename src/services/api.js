@@ -4,8 +4,9 @@ import { env, host } from '../config'
 import { Base64 } from 'js-base64'
 
 function isLogin(){
-  const token = wepy.getStorageSync('_token')  
-  return (token ? true : false)
+  const token = wepy.getStorageSync('_token')
+  console.log('tpken', token)
+  return !!token
 }
 
 async function createAccount(data = {}) {
@@ -33,7 +34,7 @@ async function updateAccount(data = {}) {
     method: 'PUT',
     data: data
   })
-  return res.data 
+  return res.data
 }
 // 榜单
 
@@ -43,7 +44,7 @@ async function getRankAccounts(data={}) {
     method: 'GET',
     data: data
   })
-  return res.data 
+  return res.data
 }
 
 async function getUserInfo() {
@@ -86,7 +87,7 @@ async function setDrawLog(data={}){
     method: 'POST',
     data: data
   })
-  return res.data 
+  return res.data
 }
 
 async function getDrawLogs(data={}){
@@ -95,7 +96,7 @@ async function getDrawLogs(data={}){
     method: 'GET',
     data: data
   })
-  return res.data 
+  return res.data
 }
 
 async function getInviteLogs(data={}){
@@ -104,12 +105,12 @@ async function getInviteLogs(data={}){
     method: 'GET',
     data: data
   })
-  return res.data 
+  return res.data
 }
 
-function getVerifyImg(key = 1 ) {  
+function getVerifyImg(key = 1 ) {
   if(key == 1)
-    return host + '/rucaptcha'   
+    return host + '/rucaptcha'
   else {
     return host + '/api/verify_code'
   }
@@ -121,7 +122,7 @@ async function activeInviteLog(data={}) {
     method: 'POST',
     data: data
   })
-  return res.data 
+  return res.data
 }
 
 module.exports = {

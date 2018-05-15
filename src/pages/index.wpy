@@ -165,9 +165,11 @@
     // }
 
     async onShow(options) {
-      await this.loadSiteConfigs();
-      await this.loadUserInfo();
+      if (!this.site_configs) {
+        await this.loadSiteConfigs();
+      }
 
+      await this.loadUserInfo();
       if (this.userInfo) {
         this.logined = !!this.userInfo.id;
         this.phone = !!this.userInfo.phone;
@@ -180,7 +182,12 @@
     }
 
     async onLoad(options) {
-      // await this.showWelcomeInfo()
+      this.site_configs = await api.getSiteConfigs()
+      this.$apply()
+      // await this.loadSiteConfigs();
+      await this.loadUserInfo();
+      console.log('site_configs', this.site_configs)
+
     }
   }
 </script>

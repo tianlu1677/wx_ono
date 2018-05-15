@@ -32,12 +32,14 @@ const loginInterface = {
       const token = wepy.getStorageSync('_token')
       console.log('token', token)
       // return
-      if (!token || token.length < 5) {
+      if (token && token.length < 5) {
         const userinfo = await loginInterface.saveUserInfo()
         // wepy.reLaunch({
         //   url: '/pages/index'
         // })
         return userinfo
+      } else {
+        return {}
       }
     } catch (e) {
       console.log('error Userlog', e)
@@ -48,7 +50,7 @@ const loginInterface = {
         })
         return
       }
-      return 
+      return
       // 以下不运行
       const res = await wepy.showModal({
         title: '友情提示',
