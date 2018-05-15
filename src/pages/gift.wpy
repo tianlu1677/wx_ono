@@ -101,7 +101,7 @@
       // modal_cancalText: '取消',
       // logined: false,
       // phone: false,
-      shareToken: null
+      // shareToken: ''
     };
 
     computed = {
@@ -148,6 +148,7 @@
       this.shareToken = options.share;
 
       if (this.userInfo) {
+        console.log(this.userInfo)
         this.logined = !!this.userInfo.id;
         this.phone = !!this.userInfo.phone;
       }

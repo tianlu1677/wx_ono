@@ -10,7 +10,8 @@ export default class LoginMixin extends wepy.mixin {
     modal_title: '提示',
     modal_cancalText: '取消',
     logined: false,
-    phone: false
+    phone: false,
+    shareToken: ''
   }
   computed = {}
 
@@ -31,9 +32,14 @@ export default class LoginMixin extends wepy.mixin {
 
       this.logined = true
       let userInfo = await loginInterface.login()
+
       this.userInfo = userInfo
+      if (this.userInfo.phone) {
+        this.phone = true
+        this.modal_showModal = false
+      }
       await api.setInvite({
-        share: ''
+        share: this.shareToken
       })
       this.$apply()
     }
@@ -43,27 +49,31 @@ export default class LoginMixin extends wepy.mixin {
     if (e.detail.errMsg.indexOf('getPhoneNumber:fail') >= 0) {
       wepy.showToast({
         title: '授权手机号失败',
-        icon: "none",
-        duration: 2000
+        icon: 'none',
+        duration: 1500
       })
       this.phone = false
       this.modal_showModal = false
     } else {
       wepy.showToast({
         title: '授权手机号成功',
-        icon: "none",
-        duration: 2000
+        icon: 'none',
+        duration: 1500
       })
-
       this.modal_showModal = false
-      this.phone = true
       const phoneData = e.detail
       const loginData = await wepy.login()
-      api.updatePhone({
+      const response = await api.updatePhone({
         code: loginData.code,
         iv: phoneData.iv,
         encryptedData: phoneData.encryptedData,
       })
+      console.log('response', response)
+      if (response.status === 500) {
+        this.phone = false
+      } else {
+        this.phone = true
+      }
     }
   }
   _handleModelView(e) {

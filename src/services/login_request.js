@@ -16,7 +16,7 @@ const loginInterface = {
     let userinfo = {}
     // const parent_id = 1
     userinfoRaw = await loginInterface.getUserInfo()
-    // console.log(userinfoRaw)
+
     userinfo = await api.createAccount({
       userinfo: userinfoRaw.userInfo,
       code: userinfoRaw.code,
@@ -32,7 +32,7 @@ const loginInterface = {
       const token = wepy.getStorageSync('_token')
       console.log('token', token)
       // return
-      if (token && token.length < 5) {
+      if (!token || token.length < 5) {
         const userinfo = await loginInterface.saveUserInfo()
         // wepy.reLaunch({
         //   url: '/pages/index'
@@ -56,7 +56,7 @@ const loginInterface = {
         title: '友情提示',
         content: `登录失败，点击确定重新授权`,
       })
-      if (res.confirm == true) {
+      if (res.confirm === true) {
         const scopes = await wepy.getSetting()
         if (scopes.authSetting['scope.userInfo'] && scopes.authSetting['scope.userInfo'] == true) {
           const scopes = await wepy.openSetting()
