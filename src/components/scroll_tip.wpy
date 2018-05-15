@@ -1,27 +1,34 @@
 <style lang="less">
   .swiper-wrapper {
+    line-height: 25px;
     height: 25px;
-    font-size: 18px;
+    font-size: 16px;
+    background-color: blue;
+    opacity: 0.3;
   }
 </style>
 
-<template>  
+<template>
 
   <swiper
-      autoplay="{{autoplay}}" interval="{{interval}}" 
+      autoplay="{{autoplay}}" interval="{{interval}}"
       circular="{{circular}}"
       duration="{{duration}}"
-      class="swiper-wrapper" 
+      class="swiper-wrapper"
       wx:if="{{tips}}"
       >
+      <view style="color: white">
+
+
       <block >
         <swiper-item>
-         {{tips}}    
+         {{tips}}
         </swiper-item>
         <swiper-item>
-         {{tips}}         
+         {{tips}}
         </swiper-item>
       </block>
+      </view>
 
     </swiper>
 </template>
@@ -29,7 +36,7 @@
 <script>
   import wepy from 'wepy'
 
-  export default class Index extends wepy.component {        
+  export default class Index extends wepy.component {
     props = {
       tips: {
         type: String,
@@ -41,8 +48,8 @@
       indicatorDots: false,
       circular: true,
       autoplay: true,
-      interval: 4000,
-      duration: 5000,  
+      interval: 0,
+      duration: 1500,
     }
   }
 </script>

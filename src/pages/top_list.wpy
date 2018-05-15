@@ -89,7 +89,8 @@
             </view>
             <view class="desc">
               <text class="nickname">{{userInfo.nickname}}</text>
-              <text class="number">第{{position}}名</text>
+              <text class="number" wx:if="{{position}}">第{{position}}名</text>
+              <text class="number" wx:else>暂无排名</text>
             </view>
             <text class="count">{{userInfo.all_amount}}</text>
           </view>
@@ -155,7 +156,7 @@
       first_page: false,
       last_page: false,
       next_page: 1,
-      position: 100,
+      position: '',
       parent_name: ''
     };
 

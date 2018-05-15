@@ -32,15 +32,8 @@ const loginInterface = {
       const token = wepy.getStorageSync('_token')
       console.log('token', token)
       // return
-      if (!token || token.length < 5) {
-        const userinfo = await loginInterface.saveUserInfo()
-        // wepy.reLaunch({
-        //   url: '/pages/index'
-        // })
-        return userinfo
-      } else {
-        return {}
-      }
+      const userinfo = await loginInterface.saveUserInfo()
+      return userinfo
     } catch (e) {
       console.log('error Userlog', e)
       if (!(e.errMsg.indexOf('getUserInfo:fail') >= 0)) {

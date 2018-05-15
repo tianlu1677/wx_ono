@@ -23,7 +23,7 @@
 
   export default class Info extends wepy.page {
     config = {
-      'navigationBarTitleText': '吃糖攻略'
+      'navigationBarTitleText': '使用攻略'
     };
 
     mixins = [UserInfoMixin];

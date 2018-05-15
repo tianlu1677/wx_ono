@@ -69,11 +69,17 @@ export default class LoginMixin extends wepy.mixin {
         encryptedData: phoneData.encryptedData,
       })
       console.log('response', response)
-      if (response.status === 500) {
+      this.logined = true
+      try {
+        if (response && response.id) {
+          this.phone = true
+        } else {
+          this.phone = false
+        }
+      } catch (e) {
         this.phone = false
-      } else {
-        this.phone = true
       }
+      this.$apply()
     }
   }
   _handleModelView(e) {
@@ -81,7 +87,6 @@ export default class LoginMixin extends wepy.mixin {
       this.$apply()
   }
     _handleBackground(status = false) {
-      console.log('xxxxxx')
       this.modal_showModal = false
       this.$apply()
     }

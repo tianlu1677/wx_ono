@@ -116,9 +116,9 @@
         // {url: '/pages/mine/draw_logs', icon: `${path}/draw-money.png`, title: '成功提取', desc: `${this.userInfo.draw_amount}`, link: true},
         // {url: '/pages/mine/invite_unactive_logs', icon: `${path}/wallet.png`, title: '待激活', desc: `${this.userInfo.unactive_amount} NKC`, link: true},
 
-        { url: '/pages/mine/how_play', icon: `${path}/intro.png`, title: '吃糖攻略', desc: '', link: true },
+        { url: '/pages/mine/how_play', icon: `${path}/intro.png`, title: '使用攻略', desc: '', link: true },
 
-        { url: '/pages/mine/about', icon: `${path}/intro.png`, title: '关于项目', desc: '', link: true }
+        { url: '/pages/mine/about', icon: `${path}/intro.png`, title: '关于小助手', desc: '', link: true }
         // {url: null, icon: `${path}/my-code.png`, title: '我的编号', desc: '点击复制 ', link: false}
       ];
     }

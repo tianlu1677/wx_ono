@@ -153,16 +153,30 @@
       }
     };
 
-    // async showWelcomeInfo() {
-    //   if (this.userInfo.id > 0 && this.userInfo.first_login == true) {
-    //     await api.updateAccount({ bt_account: { first_login: false } });
-    //     wepy.showModal({
-    //       title: '恭喜',
-    //       content: `你获得了 ${this.site_configs.coin_new_user_amount} NKC, 个人中心可查看 `,
-    //       showCancel: false
-    //     });
-    //   }
-    // }
+    async showWelcomeInfo() {
+      if (this.userInfo.id > 0 && this.userInfo.all_amount > this.userInfo.last_amount) {
+
+        await api.updateAccount({ on_account: { last_amount: this.userInfo.all_amount } });
+        const res = await wepy.showModal({
+          title: '恭喜',
+          content: this.userInfo.message || '',
+          showCancel: false
+        })
+
+        if (res.confiram) {
+          const innerAudioContext = wepy.createInnerAudioContext()
+          innerAudioContext.autoplay = true
+          innerAudioContext.src = this.site_configs.ono_notice_mp3
+          innerAudioContext.onPlay(() => {
+            // console.log('开始播放')
+          })
+          innerAudioContext.onError((res) => {
+            // console.log(res.errMsg)
+            // console.log(res.errCode)
+          })
+        }
+      }
+    }
 
     async onShow(options) {
       if (!this.site_configs) {
@@ -187,6 +201,7 @@
       // await this.loadSiteConfigs();
       await this.loadUserInfo();
       console.log('site_configs', this.site_configs)
+      this.showWelcomeInfo()
 
     }
   }
