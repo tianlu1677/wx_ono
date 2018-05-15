@@ -31,7 +31,6 @@ export default class UserInfoMixin extends wepy.mixin {
 
   async loadUserInfo () {
     if (wepy.getStorageSync('_token')) {
-      console.log('xxxxx')
       this.userInfo = await api.getUserInfo()
       this.$apply()
     }

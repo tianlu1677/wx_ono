@@ -108,7 +108,7 @@
             <view class="content">
               <text class="number">{{index + 1}}</text>
               <view class="avatar">
-                <image src="{{account.avatar_url}}" style="width: 45px; height: 45px; float: left;"/>
+                <image src="{{account.avatar_url}}" style="width: 45px; height: 45px; float: left;"></image>
                 <text class="nickname">{{account.nickname}}</text>
               </view>
 

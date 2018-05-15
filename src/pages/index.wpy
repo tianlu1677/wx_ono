@@ -197,12 +197,9 @@
 
     async onLoad(options) {
       this.site_configs = await api.getSiteConfigs()
-      this.$apply()
-      // await this.loadSiteConfigs();
       await this.loadUserInfo();
-      console.log('site_configs', this.site_configs)
+      this.$apply()
       this.showWelcomeInfo()
-
     }
   }
 </script>

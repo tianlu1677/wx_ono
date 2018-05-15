@@ -38,33 +38,14 @@
       </view>
 
 
-      <view style="margin-top: 20px"></view>
+
 
       <!-- <button class="weui-btn" type="primary" style="width: 80%" @tap="checkWallet">   申请提取
       </button>
        -->
-      <view style="margin-top: 40px"></view>
 
-      <block wx:if="{{userInfo.role == 'admin' }}">
-        <form class="weui-cells weui-cells_after-title" bindsubmit="activeCode" bindreset="activeCodeReset">
-          <view class="weui-cells__title">糖主管理</view>
-          <view class="weui-cells weui-cells_after-title">
-            <view class="weui-cell weui-cell_input">
-              <view class="weui-cell__hd">
-                <view class="weui-label">用户编号</view>
-              </view>
-              <view class="weui-cell__bd">
-                <input class="weui-input" name="code" placeholder="请输入编号" maxlength="20"/>
-              </view>
-            </view>
-          </view>
-          <view class="weui-btn-area">
-            <button class="weui-btn weui-btn_plain-primary" style="width: 80%" type="" formType="submit">
-              提交编号
-            </button>
-          </view>
-        </form>
-      </block>
+
+
     </view>
   </view>
 </template>
@@ -171,11 +152,6 @@
 
     async onShow() {
       await this.loadUserInfo();
-      if (this.userInfo.id > 0) {
-
-      } else {
-        // wepy.switchTab({ url: '/pages/index' });
-      }
       this.cells = this.setCells();
       this.copy_cell = this.cells[3];
       this.$apply();
