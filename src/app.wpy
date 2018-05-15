@@ -45,7 +45,7 @@ export default class extends wepy.app {
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'Sport',
       navigationBarTextStyle: 'black',
-      enablePullDownRefresh: true,
+      enablePullDownRefresh: true
     },
 
     tabBar: {
@@ -100,12 +100,12 @@ export default class extends wepy.app {
   }
 
   async getUser(options) {
-    if( this.globalData.userInfo.token){
+    if (this.globalData.userInfo.token) {
       return
     }
     const userInfo = await loginInterface.login()
     this.globalData.userInfo = userInfo
-    if(userInfo && options.query) {
+    if (userInfo && options.query) {
       // const share = options.query.share
       // 邀请
       // await api.setInvite({share: share})

@@ -13,9 +13,6 @@ export default class LoginMixin extends wepy.mixin {
     phone: false
   }
   computed = {}
-  _goIntro(){
-    wepy.navigateTo({url: '/pages/intro'})
-  }
 
   async _bindGetUserInfo(e) {
     console.log('用户登录')
@@ -33,7 +30,7 @@ export default class LoginMixin extends wepy.mixin {
       })
 
       this.logined = true
-      const userInfo = await loginInterface.login()
+      let userInfo = await loginInterface.login()
       this.userInfo = userInfo
       await api.setInvite({
         share: ''
@@ -43,12 +40,12 @@ export default class LoginMixin extends wepy.mixin {
   }
   async _getPhoneNumber(e) {
     console.log('e', e.detail)
-    if (e.detail.errMsg.indexOf("getPhoneNumber:fail") >= 0) {
+    if (e.detail.errMsg.indexOf('getPhoneNumber:fail') >= 0) {
       wepy.showToast({
         title: '授权手机号失败',
         icon: "none",
         duration: 2000
-      })      
+      })
       this.phone = false
       this.modal_showModal = false
     } else {
@@ -57,7 +54,7 @@ export default class LoginMixin extends wepy.mixin {
         icon: "none",
         duration: 2000
       })
-      
+
       this.modal_showModal = false
       this.phone = true
       const phoneData = e.detail
@@ -66,7 +63,7 @@ export default class LoginMixin extends wepy.mixin {
         code: loginData.code,
         iv: phoneData.iv,
         encryptedData: phoneData.encryptedData,
-      })      
+      })
     }
   }
   _handleModelView(e) {
@@ -87,8 +84,6 @@ export default class LoginMixin extends wepy.mixin {
     })
   }
   onShow() {
-    // this.userInfo = await wepy.$instance.globalData.userInfo //this.$parent.globalData.userInfo  
-    // this.$apply()
   }
   async onLoad() {}
 }

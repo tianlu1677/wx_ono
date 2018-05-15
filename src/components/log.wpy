@@ -119,16 +119,7 @@
       }
       wepy.showLoading({title: '加载中', mask: true})
       let res = {}
-      // if(this.parent_name == 'DrawLogs'){
-      //   res = await api.getInviteLogs({page: this.next_page})
-      //   this.invite_logs = this.invite_logs.concat(res.bt_invite_logs)
-      // } else if(this.parent_name == 'InviteActiveLogs') {
-      //   res = await api.getInviteLogs({page: this.next_page, status: 'active'})
-      //   this.invite_logs = this.invite_logs.concat(res.bt_invite_logs)
-      // } else {
-      //   res = await api.getInviteLogs({page: this.next_page, status: 'unactive'})
-      //   this.invite_logs = this.invite_logs.concat(res.bt_invite_logs)
-      // }
+
       res = await api.getInviteLogs({page: this.next_page})
       this.invite_logs = this.invite_logs.concat(res.on_invite_logs)
 
@@ -141,9 +132,6 @@
     }
 
     async onLoad() {
-      // console.log('this.$parent', this.$parent.$name)
-      // this.parent_name = this.$parent.$name
-
       await this.getInviteLogs()
     }
   }

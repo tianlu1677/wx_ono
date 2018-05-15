@@ -187,6 +187,9 @@
       this.$apply();
       wepy.hideLoading();
     }
+    async onShow() {
+
+    }
 
     async onLoad() {
       await this.loadSiteConfigs();

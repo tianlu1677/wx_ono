@@ -88,7 +88,6 @@
   import api from '../services/api';
   import { Base64 } from 'js-base64';
   import Modal from '../components/modal';
-  import loginInterface from '../services/login_request';
 
   export default class Index extends wepy.page {
     config = {
@@ -129,7 +128,7 @@
         const shareParentId = Base64.encode('3427' + this.userInfo.id);
         console.log(shareParentId);
         return {
-          title: `${this.site_configs.ono_mainpage_share_title  }`,
+          title: `${this.site_configs.ono_mainpage_share_title}`,
           path: `/pages/gift?share=${shareParentId}`,
           imageUrl: this.site_configs.ono_mainpage_share_page,
           success: function(res) {
@@ -150,22 +149,22 @@
         this._handleModelView(e);
       },
       goIntro() {
-        wepy.navigateTo({ url: '/pages/intro' });
+        wepy.navigateTo({url: '/pages/intro'});
       }
     };
 
-    async showWelcomeInfo() {
-      if (this.userInfo.id > 0 && this.userInfo.first_login == true) {
-        await api.updateAccount({ bt_account: { first_login: false } });
-        wepy.showModal({
-          title: '恭喜',
-          content: `你获得了 ${this.site_configs.coin_new_user_amount} NKC, 个人中心可查看 `,
-          showCancel: false
-        });
-      }
-    }
+    // async showWelcomeInfo() {
+    //   if (this.userInfo.id > 0 && this.userInfo.first_login == true) {
+    //     await api.updateAccount({ bt_account: { first_login: false } });
+    //     wepy.showModal({
+    //       title: '恭喜',
+    //       content: `你获得了 ${this.site_configs.coin_new_user_amount} NKC, 个人中心可查看 `,
+    //       showCancel: false
+    //     });
+    //   }
+    // }
 
-    async onLoad(options) {
+    async onShow(options) {
       await this.loadSiteConfigs();
       await this.loadUserInfo();
 
@@ -178,7 +177,9 @@
       wepy.showShareMenu({
         withShareTicket: true
       });
+    }
 
+    async onLoad(options) {
       // await this.showWelcomeInfo()
     }
   }

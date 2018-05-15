@@ -31,9 +31,9 @@
 
 <template>
   <view>
-    <!--<ScrollTip :tips.sync="tips"></ScrollTip>-->
+    <ScrollTip :tips.sync="tips"></ScrollTip>
 
-    <!--<log></log>-->
+    <log></log>
   </view>
 </template>
 
@@ -68,8 +68,6 @@
 
     async onLoad() {
       await this.loadSiteConfigs();
-      // const res = await wepy.getStorage({ key: 'site_configs' });
-      // this.site_configs = res.data;
       this.$apply();
     }
   }
