@@ -13,7 +13,7 @@ export default class LoginMixin extends wepy.mixin {
     phone: false
   }
   computed = {}
-  goIntro(){
+  _goIntro(){
     wepy.navigateTo({url: '/pages/intro'})
   }
 

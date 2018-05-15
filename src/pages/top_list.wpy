@@ -1,7 +1,7 @@
 <style lang="less">
   .top-list {
     .current-account {
-      border-bottom: 1px solid #B2B2B2;      
+      border-bottom: 1px solid #B2B2B2;
     }
     .weui-media-box__title_in-text {
       .content {
@@ -27,14 +27,14 @@
           text-align: right;
           flex: 1;
           font-size: 18px;
-          float: right;          
+          float: right;
           color: #d6ab12;
 
         }
       }
 
       .user-content {
-        display: flex;        
+        display: flex;
         .avatar {
           width: 50px;
           height: 50px;
@@ -47,21 +47,21 @@
           display: flex;
           flex-direction: column;
           .nickname {
-            font-size: 16px;            
+            font-size: 16px;
           }
           .number {
             font-size: 14px;
-            width: 20px;            
+            width: 20px;
             color: gray;
           }
         }
-        
+
         .count {
           text-align: right;
           line-height: 50px;
           flex: 1;
           font-size: 18px;
-          float: right;          
+          float: right;
           color: #d6ab12;
 
         }
@@ -71,7 +71,7 @@
     .weui-media-box {
       padding-top: 5px;
       padding-bottom: 2px;
-    }    
+    }
   }
 </style>
 <template>
@@ -80,21 +80,22 @@
     <ScrollTip :tips.sync="tips"></ScrollTip>
 
     <view class="weui-panel__bd current-account">
-        <view class="weui-media-box weui-media-box_text ">
-          <view class="weui-media-box__title weui-media-box__title_in-text">
-            <view class="user-content">              
-              <view class="avatar">
-                <open-data type="userAvatarUrl" class="open-data-avatar">                  
-                </open-data>                                              
-              </view>
-              <view class="desc">
-                  <text class="nickname">{{userInfo.nickname}}</text>  
-                  <text class="number">第{{position}}名</text>
-                </view>
-                <text class="count">{{userInfo.all_amount}}</text>              
+      <view class="weui-media-box weui-media-box_text ">
+        <view class="weui-media-box__title weui-media-box__title_in-text">
+          <view class="user-content">
+            <view class="avatar">
+              <open-data type="userAvatarUrl" class="open-data-avatar">
+              </open-data>
             </view>
+            <view class="desc">
+              <text class="nickname">{{userInfo.nickname}}</text>
+              <text class="number">第{{position}}名</text>
+            </view>
+            <text class="count">{{userInfo.all_amount}}</text>
           </view>
+          <!-- </view> -->
         </view>
+      </view>
     </view>
 
     <!-- <view class="weui-panel__hd">文字组合列表</view> -->
@@ -121,9 +122,9 @@
     </view>
     <view class="weui-panel__ft" wx:if="{{false}}">
       <view class="weui-cell weui-cell_access weui-cell_link" style="text-align: center">
-        <view class="weui-cell__bd" wx:if="{{accounts.length == 0}}">暂无记录
+        <view class="weui-cell__bd" wx:if="{{accounts.length === 0}}">暂无记录
         </view>
-        <view class="weui-cell__bd" @tap="loadMore" wx:if="{{accounts.length != 0 && !last_page}}">查看更多
+        <view class="weui-cell__bd" @tap="loadMore" wx:if="{{accounts.length !== 0 && !last_page}}">查看更多
         </view>
         <view class="weui-cell__bd" wx:if="{{last_page}}">已加载全部</view>
         <!-- <view class="weui-cell__ft weui-cell__ft_in-access"></view> -->
@@ -135,7 +136,7 @@
 
 <script>
   import wepy from 'wepy';
-  import ScrollTip from '../components/scroll_tip'
+  import ScrollTip from '../components/scroll_tip';
   import UserInfoMixin from '../mixins/userinfo_mixin';
   import api from '../services/api';
 
@@ -147,16 +148,15 @@
       ScrollTip: ScrollTip
     }
 
-    mixins = [UserInfoMixin];
+    mixins = [UserInfoMixin]
 
     data = {
-      draw_logs: [],
       accounts: [],
       first_page: false,
-      last_page: false,      
+      last_page: false,
       next_page: 1,
       position: 100,
-      parent_name: ''      
+      parent_name: ''
     };
 
     events = {};
@@ -164,7 +164,7 @@
       tips() {
         return this.site_configs.ono_scroll_tips
       }
-    }
+    };
 
     watch = {};
 
@@ -174,15 +174,15 @@
       }
     };
 
-    async getMoreAccounts() {     
+    async getMoreAccounts() {
       wepy.showLoading({ title: '加载中', mask: true });
       let res = {};
-      res = await api.getRankAccounts({ page: this.next_page });
+      res = await api.getRankAccounts();
       this.accounts = this.accounts.concat(res.accounts);
       this.first_page = res.first_page;
       this.last_page = res.last_page;
       this.next_page = res.next_page;
-      this.position = res.position
+      this.position = res.position;
       wepy.stopPullDownRefresh();
       this.$apply();
       wepy.hideLoading();

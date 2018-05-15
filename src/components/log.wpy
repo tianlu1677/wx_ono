@@ -1,6 +1,5 @@
 <style lang="less">
  .invite_log {
-    
     .weui-media-box__title_in-text {
       .count {
         text-align: right;
@@ -19,9 +18,9 @@
       .desc {
         margin-left: 10px;
         margin-top: 5px;
-        font-size: 14px;        
+        font-size: 14px;
         .log {
-          
+
         }
         .time {
           font-size: 12px;
@@ -36,42 +35,41 @@
 
       }
     }
-    
+
   }
 </style>
 
 <template>
   <view class="weui-panel weui-panel_access invite_log">
-      <!-- <view class="weui-panel__hd">文字组合列表</view> -->
+
         <view class="weui-panel__bd">
-          <repeat for="{{invite_logs}}" key="key" item="invite_log" index="index">       
+          <repeat for="{{invite_logs}}" key="key" item="invite_log" index="index">
             <view class="weui-media-box weui-media-box_text">
 
                 <view class="weui-media-box__title weui-media-box__title_in-text content"
                 >
-                  <image
+                    <image
                     src="{{invite_log.account_avatar_url}}"
-                    style="width: 100%;"
                     mode="widthFix"
                     style="width: 45px; heigth: 45px; border-radius: 50%;"
-                    />  
+                    ></image>
                     <view class="desc">
                       <text class="log">{{invite_log.record_log}}</text>
                       <text class="time">
                         {{invite_log.created_at}}
-                    </text>
+                      </text>
                     </view>
-                  
+
                   <view class="right">
                     <text class="count">+{{invite_log.obtain_amount}}</text>
                     <text class="count">{{invite_log.handle_type}}</text>
-                  </view>                                  
-                </view>                
-            </view>  
-          </repeat>  
-                    
+                  </view>
+                </view>
+            </view>
+          </repeat>
+
         </view>
-        <view class="weui-panel__ft">            
+        <view class="weui-panel__ft">
             <view class="weui-cell weui-cell_access weui-cell_link" style="text-align: center">
                 <view class="weui-cell__bd" wx:if="{{invite_logs.length == 0}}">暂无记录
                 </view>
@@ -90,7 +88,7 @@
   import api from '../services/api'
   export default class Index extends wepy.component {
     props = {
-      
+
     }
 
     data = {
@@ -100,29 +98,29 @@
       next_page: 1,
       parent_name: ''
     }
-    
+
     events = {
 
     }
 
     watch = {
-      
+
     }
 
     methods = {
       async loadMore() {
-        await this.getDrawLogs()
+        await this.getInviteLogs()
       }
     }
 
-    async getDrawLogs () {
-      if (this.last_page || this.last_page === 0) {      
+    async getInviteLogs () {
+      if (this.last_page || this.last_page === 0) {
         return
       }
-      wepy.showLoading({title: '加载中', mask: true})      
+      wepy.showLoading({title: '加载中', mask: true})
       let res = {}
       // if(this.parent_name == 'DrawLogs'){
-      //   res = await api.getDrawLogs({page: this.next_page})        
+      //   res = await api.getInviteLogs({page: this.next_page})
       //   this.invite_logs = this.invite_logs.concat(res.bt_invite_logs)
       // } else if(this.parent_name == 'InviteActiveLogs') {
       //   res = await api.getInviteLogs({page: this.next_page, status: 'active'})
@@ -130,22 +128,23 @@
       // } else {
       //   res = await api.getInviteLogs({page: this.next_page, status: 'unactive'})
       //   this.invite_logs = this.invite_logs.concat(res.bt_invite_logs)
-      // }  
+      // }
       res = await api.getInviteLogs({page: this.next_page})
       this.invite_logs = this.invite_logs.concat(res.on_invite_logs)
-      
+
       this.first_page = res.first_page
       this.last_page = res.last_page
       this.next_page = res.next_page
       wepy.stopPullDownRefresh()
-      this.$apply()     
+      this.$apply()
       wepy.hideLoading()
     }
 
     async onLoad() {
       // console.log('this.$parent', this.$parent.$name)
-      // this.parent_name = this.$parent.$name      
-      await this.getDrawLogs()        
+      // this.parent_name = this.$parent.$name
+
+      await this.getInviteLogs()
     }
   }
 </script>
