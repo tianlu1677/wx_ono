@@ -23,7 +23,7 @@
 
 <template>
   <view class="container home">
-    <view class="page__bd">
+    <view class="page__bd" >
       <avatar :userinfo.sync="userInfo"></avatar>
 
       <view class="content">
@@ -154,7 +154,7 @@
     };
 
     async showWelcomeInfo() {
-      if (this.userInfo.id > 0 && this.userInfo.all_amount > this.userInfo.last_amount) {
+      if ((this.userInfo.id > 0) && (this.userInfo.all_amount > this.userInfo.last_amount)) {
 
         await api.updateAccount({ on_account: { last_amount: this.userInfo.all_amount } });
         const res = await wepy.showModal({
@@ -174,31 +174,28 @@
             // console.log(res.errMsg)
             // console.log(res.errCode)
           })
+        } else {
+
         }
       }
     }
 
     async onShow(options) {
-      if (!this.site_configs) {
-        await this.loadSiteConfigs();
-      }
-
       await this.loadUserInfo();
+      this.site_configs = await api.getSiteConfigs()
+      this.$apply()
       if (this.userInfo) {
         this.logined = !!this.userInfo.id;
         this.phone = !!this.userInfo.phone;
-        this.$apply();
       }
+      console.log('site_config', this.site_configs)
+      this.$apply();
 
       wepy.showShareMenu({
         withShareTicket: true
       });
     }
-
     async onLoad(options) {
-      this.site_configs = await api.getSiteConfigs()
-      await this.loadUserInfo();
-      this.$apply()
       this.showWelcomeInfo()
     }
   }

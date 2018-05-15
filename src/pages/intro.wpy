@@ -16,6 +16,7 @@
 
 <script>
   import wepy from 'wepy';
+  import api from '../services/api';
   import UserInfoMixin from '../mixins/userinfo_mixin';
   import { Base64 } from 'js-base64';
   import HTMLParser from '../components/html_parser';
@@ -44,8 +45,7 @@
     events = {};
 
     onLoad() {
-      this.loadSiteConfigs();
-      this.content = this.site_configs.ono_agreement_text;
+      this.content = api.agreement()
       this.$apply();
       this.$invoke('htmlParser', 'htmlParserNotice');
     }

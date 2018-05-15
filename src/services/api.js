@@ -63,6 +63,15 @@ async function getSiteConfigs() {
   return res.data
 }
 
+async function agreement() {
+  const res = await http({
+    url: host + '/api/ono/v1/site_configs/agreement',
+    method: 'GET'
+  })
+
+  return res.data
+}
+
 async function setWallet(data = {}) {
   const res = await http({
     url: host + '/api/ono/v1/accounts/wallet',
@@ -139,6 +148,7 @@ module.exports = {
   updateAccount,
   activeInviteLog,
   getRankAccounts,
-  updatePhone
+  updatePhone,
+  agreement
 
 }
