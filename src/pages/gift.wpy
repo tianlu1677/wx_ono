@@ -22,7 +22,7 @@
 </style>
 
 <template>
-  <view class="container home">
+  <view class="weui-panel weui-panel_access container home">
     <ScrollTip :tips.sync="tips"></ScrollTip>
     <view class="page__bd">
       <!--<view class="content">-->
@@ -88,7 +88,7 @@
   import LoginMixin from '../mixins/login_mixin';
   import api from '../services/api';
   import Modal from '../components/modal';
-  import loginInterface from '../services/login_request';
+  // import loginInterface from '../services/login_request';
 
   export default class Index extends wepy.page {
     config = {
@@ -97,7 +97,7 @@
     mixins = [UserInfoMixin, LoginMixin];
 
     components = {
-      avatar: Avatar,
+      // avatar: Avatar,
       Modal: Modal,
       ScrollTip: ScrollTip
     };
@@ -143,17 +143,6 @@
         wepy.switchTab({ url: '/pages/index' });
       }
     };
-
-    async showWelcomeInfo() {
-      if (this.userInfo.id > 0 && this.userInfo.first_login == true) {
-        await api.updateAccount({ bt_account: { first_login: false } });
-        wepy.showModal({
-          title: '恭喜',
-          content: `你获得了 ${this.site_configs.coin_new_user_amount} NKC, 个人中心可查看 `,
-          showCancel: false
-        });
-      }
-    }
 
     async onLoad(options) {
       await this.loadSiteConfigs();

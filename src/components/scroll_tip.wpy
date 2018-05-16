@@ -5,36 +5,45 @@
     font-size: 16px;
     background-color: blue;
     opacity: 0.3;
+    min-width: 1000px;
+    .item {
+
+    }
   }
 </style>
 
 <template>
 
   <swiper
-      autoplay="{{autoplay}}" interval="{{interval}}"
-      circular="{{circular}}"
-      duration="{{duration}}"
-      class="swiper-wrapper"
-      wx:if="{{tips}}"
-      >
-      <view style="color: white">
+    autoplay="{{autoplay}}" interval="{{interval}}"
+    circular="{{circular}}"
+    duration="{{duration}}"
+    class="swiper-wrapper"
+    display-multiple-items="1"
+    wx:if="{{tips}}"
+    style="width: {{tips.length * 16}}px"
+  >
+    <view style="color: white">
+      <block>
 
-
-      <block >
         <swiper-item>
-         {{tips}}
+          <view class="item">
+            {{tips}}
+          </view>
         </swiper-item>
         <swiper-item>
-         {{tips}}
+          <view class="item">
+            {{tips}}
+          </view>
         </swiper-item>
       </block>
-      </view>
+    </view>
 
-    </swiper>
+  </swiper>
 </template>
 
 <script>
-  import wepy from 'wepy'
+  import wepy from 'wepy';
 
   export default class Index extends wepy.component {
     props = {
@@ -42,14 +51,17 @@
         type: String,
         default: '',
         twoWay: true
-      },
-    }
+      }
+    };
     data = {
       indicatorDots: false,
       circular: true,
       autoplay: true,
       interval: 0,
-      duration: 1500
+      duration: 4000
+    };
+    computed = {
+
     }
   }
 </script>

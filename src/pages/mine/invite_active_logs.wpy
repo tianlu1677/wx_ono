@@ -30,10 +30,9 @@
 </style>
 
 <template>
-  <view>
+  <view class="weui-panel weui-panel_access invite_log">
     <ScrollTip :tips.sync="tips"></ScrollTip>
-
-    <view class="weui-panel weui-panel_access invite_log">
+    <view>
 
       <view class="weui-panel__bd">
         <repeat for="{{invite_logs}}" key="key" item="invite_log" index="index">

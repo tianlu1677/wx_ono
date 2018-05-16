@@ -155,29 +155,30 @@
 
     async showWelcomeInfo() {
       if ((this.userInfo.id > 0) && (this.userInfo.all_amount > this.userInfo.last_amount)) {
-
         await api.updateAccount({ on_account: { last_amount: this.userInfo.all_amount } });
         const res = await wepy.showModal({
           title: '',
           content: this.userInfo.message || '',
           showCancel: false
         })
-
-        if (res.confiram) {
-          const innerAudioContext = wepy.createInnerAudioContext()
-          innerAudioContext.autoplay = true
-          innerAudioContext.src = this.site_configs.ono_notice_mp3
-          innerAudioContext.onPlay(() => {
-            // console.log('开始播放')
-          })
-          innerAudioContext.onError((res) => {
-            // console.log(res.errMsg)
-            // console.log(res.errCode)
-          })
-        } else {
-
-        }
+        this.loadAudio().play()
+        this.loadAudio().stop()
       }
+    }
+
+    loadAudio() {
+      const innerAudioContext = wepy.createInnerAudioContext()
+      innerAudioContext.autoplay = false
+      innerAudioContext.src = this.site_configs.ono_notice_mp3
+      innerAudioContext.onPlay(() => {
+        console.log('开始播放')
+      })
+      innerAudioContext.onError((res) => {
+        // console.log(res.errMsg)
+        // console.log(res.errCode)
+      })
+
+      return innerAudioContext
     }
 
     async onShow(options) {
@@ -191,7 +192,6 @@
 
       this.showWelcomeInfo()
 
-      console.log('site_config', this.site_configs)
       this.$apply();
 
       wepy.showShareMenu({
@@ -199,6 +199,7 @@
       });
     }
     async onLoad(options) {
+      this.loadAudio()
 
     }
   }
