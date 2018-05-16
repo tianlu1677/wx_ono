@@ -5,7 +5,7 @@
     font-size: 16px;
     background-color: blue;
     opacity: 0.3;
-    min-width: 1000px;
+    min-width: 500px;
     .item {
 
     }
@@ -22,6 +22,7 @@
     display-multiple-items="1"
     wx:if="{{tips}}"
     style="width: {{tips.length * 16}}px"
+    previous-margin="10px"
   >
     <view style="color: white">
       <block>
@@ -36,6 +37,11 @@
             {{tips}}
           </view>
         </swiper-item>
+        <swiper-item>
+          <view class="item">
+            {{tips}}
+          </view>
+        </swiper-item>        
       </block>
     </view>
 
@@ -58,7 +64,7 @@
       circular: true,
       autoplay: true,
       interval: 0,
-      duration: 4000
+      duration: 7000
     };
     computed = {
 
