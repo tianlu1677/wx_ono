@@ -32,7 +32,7 @@
       <view style="margin-top: 5px"></view>
 
       <image
-        src="{{site_configs.ono_mainpage_png}}"
+        src="{{site_configs.ono_giftpage_png}}"
         style="width: 100%;"
         mode="widthFix"
       ></image>
@@ -47,7 +47,7 @@
         titleTextAlign="center">
         <view slot="content">
           <view>{{site_configs.ono_getphone_pre_text}}</view>
-          <view class="link">{{site_configs.ono_hyperlink_text}}</view>
+          <view class="link" @tap="goIntro">{{site_configs.ono_hyperlink_text}}</view>
         </view>
         <view slot="cancel">
         </view>
@@ -141,6 +141,9 @@
       },
       goHome() {
         wepy.switchTab({ url: '/pages/index' });
+      },
+      goIntro() {
+        wepy.navigateTo({url: '/pages/intro'});
       }
     };
 
